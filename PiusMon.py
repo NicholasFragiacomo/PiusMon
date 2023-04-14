@@ -47,10 +47,10 @@ class PiusMon:
     def start_screen(self):
 
         screen = self.draw_screen('PiusMon',self.width,self.height)
-
+        click = False
         running = True
         while running:
-            click = False
+            
 
             font = pygame.font.SysFont('PressStart2P-Regular.ttf', 30)
             mx, my = pygame.mouse.get_pos()
@@ -71,6 +71,50 @@ class PiusMon:
                     self.multiPick_screen(screen)
 
             # Events
+            click = False
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                if event.type == MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        click = True
+
+            pygame.display.update()
+            mainClock.tick(60)
+
+    
+    def singlePick_screen(self,screen):
+
+        screen = self.draw_screen('Pick screen',self.width,self.height)
+        click = False
+        running = True
+        while running:
+
+            font = pygame.font.SysFont('PressStart2P-Regular.ttf', 30)
+            mx, my = pygame.mouse.get_pos()
+
+            screen.fill(self.backgroundColor)
+            self.draw_text('Pick PiusMon', font, self.textColor, screen, 250, 40)
+            Back_button = self.draw_button(10, 10, 50, 50, screen, (200, 210, 100), '<--', font, self.textColor)
+
+            Mon1_button = self.draw_button(400, 400, 200, 50, screen, (200, 210, 100), 'Mon1', font, self.textColor)
+            Mplayer_button = self.draw_button(400, 500, 200, 50, screen, (200, 210, 100), 'Multiplayer', font, self.textColor)
+
+            # Button 1 collision
+            if Mon1_button.collidepoint((mx, my)):
+                if click:
+                    #self.Splayer_screen(screen)
+                    print('pick Mon 1')
+            if Mplayer_button.collidepoint((mx, my)):
+                if click:
+                    #self.registor_screen(screen)
+                    print('Click')
+            if Back_button.collidepoint((mx,my)):
+                if click:
+                    running = False
+
+            # Events
+            click = False
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -84,7 +128,7 @@ class PiusMon:
     def multiPick_screen(self,screen):
 
         screen = self.draw_screen('Pick screen',self.width,self.height)
-
+        click = False
         running = True
         while running:
 
@@ -93,6 +137,7 @@ class PiusMon:
 
             screen.fill(self.backgroundColor)
             self.draw_text('Pick PiusMon', font, self.textColor, screen, 250, 40)
+            Back_button = self.draw_button(10, 10, 200, 50, screen, (200, 210, 100), '<--', font, self.textColor)
 
 
             Splayer_button = self.draw_button(400, 400, 200, 50, screen, (200, 210, 100), 'Single Player', font, self.textColor)
@@ -117,44 +162,6 @@ class PiusMon:
 
             pygame.display.update()
             mainClock.tick(60)
-    
-    def singlePick_screen(self,screen):
-
-        screen = self.draw_screen('Pick screen',self.width,self.height)
-
-        running = True
-        while running:
-
-            font = pygame.font.SysFont('PressStart2P-Regular.ttf', 30)
-            mx, my = pygame.mouse.get_pos()
-
-            screen.fill(self.backgroundColor)
-            self.draw_text('Pick PiusMon', font, self.textColor, screen, 250, 40)
-
-
-            Splayer_button = self.draw_button(400, 400, 200, 50, screen, (200, 210, 100), 'Single Player', font, self.textColor)
-            Mplayer_button = self.draw_button(400, 500, 200, 50, screen, (200, 210, 100), 'Multiplayer', font, self.textColor)
-
-            # Button 1 collision
-            if Splayer_button.collidepoint((mx, my)):
-                if click:
-                    self.Splayer_screen(screen)
-            if Mplayer_button.collidepoint((mx, my)):
-                if click:
-                    self.registor_screen(screen)
-
-            # Events
-            click = False
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-                if event.type == MOUSEBUTTONDOWN:
-                    if event.button == 1:
-                        click = True
-
-            pygame.display.update()
-            mainClock.tick(60)
-
 '''
 Main
 '''
