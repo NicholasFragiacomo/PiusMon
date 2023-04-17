@@ -28,12 +28,12 @@ class PiusMon:
         return screen
 
     # draws button - does not handle collision
-    def draw_button(self, x, y, width, height, screen, button_color, text, font, text_color, outline=0, img = False,img_file=''):
+    def draw_button(self, x, y, width, height, screen, button_color, text, font, text_color, outline=0, img = False,img_file='',img_w=10,img_h=10):
         button = pygame.Rect(x, y, width, height)
         pygame.draw.rect(screen, (button_color), button, outline)
         self.draw_text(text, font, text_color, screen, x+10, y+10)
         if img:
-            self.draw_image(screen,img_file,x*2,y*2)
+            self.draw_image(screen,img_file,x,y,img_w,img_h)
         return button
     
 
@@ -43,8 +43,9 @@ class PiusMon:
         textrect.topleft = (x, y)
         surface.blit(textobj, textrect)
 
-    def draw_image(self, screen, img_file,x,y):
-        img = pygame.image.load(img_file).convert()
+    def draw_image(self, screen, img_file,x,y,w,h):
+        img = pygame.image.load(img_file).convert_alpha()
+        img = pygame.transform.smoothscale(img, (w, h)) 
         screen.blit(img,(x,y))
 
     '''
@@ -69,7 +70,7 @@ class PiusMon:
             Splayer_button = self.draw_button(400, 400, 200, 50, screen, (200, 210, 100), 'Single Player', font, self.textColor)
             Mplayer_button = self.draw_button(400, 500, 200, 50, screen, (200, 210, 100), 'Multiplayer', font, self.textColor)
 
-            self.draw_image(screen,'Art/logo.png',300,20)
+            self.draw_image(screen,'Art/logo.png',300,20,300,300)
             # Button 1 collision
             if Splayer_button.collidepoint((mx, my)):
                 if click:
@@ -105,23 +106,23 @@ class PiusMon:
             self.draw_text('Pick PiusMon', font, self.textColor, screen, 250, 40)
             Back_button = self.draw_button(10, 10, 50, 50, screen, (200, 0, 0), '<--', font, self.textColor)
 
-            Mon1_button = self.draw_button(200, 150, 120, 200, screen, (200, 210, 100), 'Mon1', font, self.textColor,0,True,'Art/paperBoy_1.png')
-            
+            paperBoy_button = self.draw_button(200, 150, 120, 175, screen, (200, 210, 100), 'PAPERBOY', font, self.textColor,0,True,'Art/paperBoy_1.png',125,200)
+            paperToy_button = self.draw_button(200, 350, 120, 175, screen, (200, 210, 100), 'PAPERTOY', font, self.textColor,0,True,'Art/paperBoy_2.png',125,200)
+
+            rockson_button = self.draw_button(350, 150, 120, 175, screen, (200, 210, 100), 'ROCKSON', font, self.textColor,0,True,'Art/Rockson_1.png',125,200)
+            rockoSocko_button = self.draw_button(350, 350, 120, 175, screen, (200, 210, 100), 'ROCKO SOCKO', font, self.textColor,0,True,'Art/Rockson_2.png',125,200)
+
+            scissorFeetjohn_button = self.draw_button(500, 150, 120, 175, screen, (200, 210, 100), 'SCISSORFEET JOHN', font, self.textColor,0,True,'Art/johnScissorfeet_1.png',125,200)
+            scissorFeetron_button = self.draw_button(500, 350, 120, 175, screen, (200, 210, 100), 'SCISSORFEET RON', font, self.textColor,0,True,'Art/johnSCissorfeet_2.png',125,200)
 
 
 
-            #Mon2_button = self.draw_button(200, 300, 200, 350, screen, (200, 210, 100), 'Multiplayer', font, self.textColor)
-
-
-            # Button 1 collision
-            if Mon1_button.collidepoint((mx, my)):
+            if paperBoy_button.collidepoint((mx, my)):
                 if click:
-                    #self.Splayer_screen(screen)
                     print('pick Mon 1')
-            #if Mon2_button.collidepoint((mx, my)):
-                #if click:
-                    #self.registor_screen(screen)
-                    #print('Click')
+            if paperToy_button.collidepoint((mx, my)):
+                if click:
+                    print('Click')
             if Back_button.collidepoint((mx,my)):
                 if click:
                     running = False
