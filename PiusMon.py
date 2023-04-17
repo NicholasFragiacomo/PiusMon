@@ -64,13 +64,13 @@ class PiusMon:
             mx, my = pygame.mouse.get_pos()
 
             screen.fill(self.backgroundColor)
-            self.draw_text('PiusMon', font, self.textColor, screen, 250, 40)
 
 
-            Splayer_button = self.draw_button(400, 400, 200, 50, screen, (200, 210, 100), 'Single Player', font, self.textColor)
-            Mplayer_button = self.draw_button(400, 500, 200, 50, screen, (200, 210, 100), 'Multiplayer', font, self.textColor)
+            Splayer_button = self.draw_button(350, 400, 200, 50, screen, (200, 210, 100), 'Single Player', font, self.textColor)
+            Mplayer_button = self.draw_button(350, 500, 200, 50, screen, (200, 210, 100), 'Multiplayer', font, self.textColor)
 
             self.draw_image(screen,'Art/logo.png',300,20,300,300)
+            self.draw_text('PiusMon', font, self.textColor, screen, 400, 200)
             # Button 1 collision
             if Splayer_button.collidepoint((mx, my)):
                 if click:
@@ -119,10 +119,23 @@ class PiusMon:
 
             if paperBoy_button.collidepoint((mx, my)):
                 if click:
-                    print('pick Mon 1')
+                    print('pick PaperBoy')
             if paperToy_button.collidepoint((mx, my)):
                 if click:
-                    print('Click')
+                    print('Pick PaperToy')
+            if rockson_button.collidepoint((mx, my)):
+                if click:
+                    print('Pick Rockson')
+            if rockoSocko_button.collidepoint((mx, my)):
+                if click:
+                    print('Pick Rocko Socko')
+            if scissorFeetjohn_button.collidepoint((mx, my)):
+                if click:
+                    print('Pick Scissorfeet John')
+            if scissorFeetron_button.collidepoint((mx, my)):
+                if click:
+                    print('Pick Scissorfeet Ron')
+
             if Back_button.collidepoint((mx,my)):
                 if click:
                     running = False
@@ -135,6 +148,8 @@ class PiusMon:
                 if event.type == MOUSEBUTTONDOWN:
                     if event.button == 1:
                         click = True
+
+    
 
             pygame.display.update()
             mainClock.tick(60)
