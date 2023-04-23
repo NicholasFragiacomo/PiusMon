@@ -4,6 +4,8 @@ import sys
 import random
 from pygame.locals import *
 import pygame.freetype
+from fighters import Fighter
+import fighters
 
 class PiusMon:
 
@@ -28,8 +30,18 @@ class PiusMon:
         return screen
 
     # draws button - does not handle collision
-    def draw_button(self, x, y, width, height, screen, button_color, text, font, text_color, outline=0, img = False,img_file='',img_w=10,img_h=10):
+    def draw_button(self, x, y, width, height, screen, button_color, text, font, text_color, outline=0):
         button = pygame.Rect(x, y, width, height)
+        pygame.draw.rect(screen, (button_color), button, outline)
+        self.draw_text(text, font, text_color, screen, x+10, y+10)
+        return button
+
+    def draw_fighterButton(self, x, y, width, height, screen, selected, text, font, text_color, outline=0, img = False,img_file='',img_w=10,img_h=10):
+        button = pygame.Rect(x, y, width, height)
+        if selected:
+            button_color = (200, 0, 0)
+        else:
+            button_color = (200, 210, 100)
         pygame.draw.rect(screen, (button_color), button, outline)
         self.draw_text(text, font, text_color, screen, x+10, y+10)
         if img:
@@ -97,29 +109,36 @@ class PiusMon:
         screen = self.draw_screen('Pick screen',self.width,self.height)
         click = False
         running = True
+        PB,PT = False,False
         while running:
 
             font = pygame.font.SysFont('PressStart2P-Regular.ttf', 30)
             mx, my = pygame.mouse.get_pos()
 
+            paperBoy = Fighter('Paperboy','rock',40,20,20)
+            print(paperBoy.name)
+            Fighter.attack(paperBoy)
+
+
             screen.fill(self.backgroundColor)
             self.draw_text('Pick PiusMon', font, self.textColor, screen, 250, 40)
             Back_button = self.draw_button(10, 10, 50, 50, screen, (200, 0, 0), '<--', font, self.textColor)
 
-            paperBoy_button = self.draw_button(200, 150, 120, 175, screen, (200, 210, 100), 'PAPERBOY', font, self.textColor,0,True,'Art/paperBoy_1.png',125,200)
-            paperToy_button = self.draw_button(200, 350, 120, 175, screen, (200, 210, 100), 'PAPERTOY', font, self.textColor,0,True,'Art/paperBoy_2.png',125,200)
+            paperBoy_button = self.draw_fighterButton(200, 150, 120, 175, screen, PB, 'PAPERBOY', font, self.textColor,0,True,'Art/paperBoy_1.png',125,200)
+            paperToy_button = self.draw_fighterButton(200, 350, 120, 175, screen, PT, 'PAPERTOY', font, self.textColor,0,True,'Art/paperBoy_2.png',125,200)
 
-            rockson_button = self.draw_button(350, 150, 120, 175, screen, (200, 210, 100), 'ROCKSON', font, self.textColor,0,True,'Art/Rockson_1.png',125,200)
-            rockoSocko_button = self.draw_button(350, 350, 120, 175, screen, (200, 210, 100), 'ROCKO SOCKO', font, self.textColor,0,True,'Art/Rockson_2.png',125,200)
+            rockson_button = self.draw_fighterButton(350, 150, 120, 175, screen, False, 'ROCKSON', font, self.textColor,0,True,'Art/Rockson_1.png',125,200)
+            rockoSocko_button = self.draw_fighterButton(350, 350, 120, 175, screen, False, 'ROCKO SOCKO', font, self.textColor,0,True,'Art/Rockson_2.png',125,200)
 
-            scissorFeetjohn_button = self.draw_button(500, 150, 120, 175, screen, (200, 210, 100), 'SCISSORFEET JOHN', font, self.textColor,0,True,'Art/johnScissorfeet_1.png',125,200)
-            scissorFeetron_button = self.draw_button(500, 350, 120, 175, screen, (200, 210, 100), 'SCISSORFEET RON', font, self.textColor,0,True,'Art/johnSCissorfeet_2.png',125,200)
+            scissorFeetjohn_button = self.draw_fighterButton(500, 150, 120, 175, screen, False, 'SCISSORFEET JOHN', font, self.textColor,0,True,'Art/johnScissorfeet_1.png',125,200)
+            scissorFeetron_button = self.draw_fighterButton(500, 350, 120, 175, screen, False, 'SCISSORFEET RON', font, self.textColor,0,True,'Art/johnSCissorfeet_2.png',125,200)
 
 
 
             if paperBoy_button.collidepoint((mx, my)):
                 if click:
                     print('pick PaperBoy')
+                    PB = True
             if paperToy_button.collidepoint((mx, my)):
                 if click:
                     print('Pick PaperToy')
@@ -191,12 +210,14 @@ class PiusMon:
 
             pygame.display.update()
             mainClock.tick(60)
+
 '''
 Main
 '''
 
 def main():
     PM = PiusMon()
+    
     pygame.init()
 
     global mainClock
