@@ -15,6 +15,7 @@ class PiusMon:
         self.height = 650
         self.backgroundColor = (100, 150, 200)
         self.textColor = (255, 255, 255)
+        self.fighters = ['paperBoy','paperToy','rockson','rockoSocko','scissorfeet Jon']
 
     '''
     Functions
@@ -124,7 +125,7 @@ class PiusMon:
             self.draw_text('Pick PiusMon', font, self.textColor, screen, 250, 40)
             Back_button = self.draw_button(10, 10, 50, 50, screen, (200, 0, 0), '<--', font, self.textColor)
 
-            paperBoy_button = self.draw_fighterButton(200, 150, 120, 175, screen, PB, 'PAPERBOY', font, self.textColor,0,True,'Art/paperBoy_1.png',125,200)
+            paperBoy_button = self.draw_fighterButton(200, 150, 120, 175, screen, PB, ('paperBoy').upper(), font, self.textColor,0,True,'Art/paperBoy_1.png',125,200)
             paperToy_button = self.draw_fighterButton(200, 350, 120, 175, screen, PT, 'PAPERTOY', font, self.textColor,0,True,'Art/paperBoy_2.png',125,200)
 
             rockson_button = self.draw_fighterButton(350, 150, 120, 175, screen, False, 'ROCKSON', font, self.textColor,0,True,'Art/Rockson_1.png',125,200)
@@ -133,12 +134,15 @@ class PiusMon:
             scissorFeetjohn_button = self.draw_fighterButton(500, 150, 120, 175, screen, False, 'SCISSORFEET JOHN', font, self.textColor,0,True,'Art/johnScissorfeet_1.png',125,200)
             scissorFeetron_button = self.draw_fighterButton(500, 350, 120, 175, screen, False, 'SCISSORFEET RON', font, self.textColor,0,True,'Art/johnSCissorfeet_2.png',125,200)
 
-
+            # for i in self.fighters
 
             if paperBoy_button.collidepoint((mx, my)):
                 if click:
                     print('pick PaperBoy')
-                    PB = True
+                    if PB == True:
+                        PB = False
+                    else:
+                        PB = True
             if paperToy_button.collidepoint((mx, my)):
                 if click:
                     print('Pick PaperToy')
