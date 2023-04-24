@@ -15,7 +15,6 @@ class PiusMon:
         self.height = 650
         self.backgroundColor = (100, 150, 200)
         self.textColor = (255, 255, 255)
-        self.fighters = ['paperBoy','paperToy','rockson','rockoSocko','scissorfeet Jon']
 
     '''
     Functions
@@ -60,6 +59,20 @@ class PiusMon:
         img = pygame.image.load(img_file).convert_alpha()
         img = pygame.transform.smoothscale(img, (w, h)) 
         screen.blit(img,(x,y))
+
+    def select(self,selection,fighter_name,XX):
+        if XX == True:
+            if len(selection) <= 2:
+                XX = False
+                selection = selection.remove(fighter_name)
+                print(selection)
+                return (selection,XX)
+            else:
+                if len(selection) <= 2:
+                    XX = True
+                    selection = selection.append(fighter_name)
+                    print(selection)
+                    return (selection,XX)
 
     '''
     Screens
@@ -111,15 +124,18 @@ class PiusMon:
         click = False
         running = True
         PB,PT = False,False
+        selection = []
         while running:
 
             font = pygame.font.SysFont('PressStart2P-Regular.ttf', 30)
             mx, my = pygame.mouse.get_pos()
 
             paperBoy = Fighter('Paperboy','rock',40,20,20)
-            print(paperBoy.name)
-            Fighter.attack(paperBoy)
+            paperToy = Fighter('paperToy','paper',12,12,12)
+            # print(paperBoy.name)
+            # Fighter.attack(paperBoy)
 
+            
 
             screen.fill(self.backgroundColor)
             self.draw_text('Pick PiusMon', font, self.textColor, screen, 250, 40)
@@ -134,18 +150,36 @@ class PiusMon:
             scissorFeetjohn_button = self.draw_fighterButton(500, 150, 120, 175, screen, False, 'SCISSORFEET JOHN', font, self.textColor,0,True,'Art/johnScissorfeet_1.png',125,200)
             scissorFeetron_button = self.draw_fighterButton(500, 350, 120, 175, screen, False, 'SCISSORFEET RON', font, self.textColor,0,True,'Art/johnSCissorfeet_2.png',125,200)
 
-            # for i in self.fighters
+            
+
 
             if paperBoy_button.collidepoint((mx, my)):
                 if click:
-                    print('pick PaperBoy')
-                    if PB == True:
-                        PB = False
-                    else:
-                        PB = True
+                    # #print('pick PaperBoy')
+                    # if PB == True:
+                    #     if len(selection) <= 2:
+                    #         PB = False
+                    #         selection.remove(paperBoy.name)
+                    #         print(selection)
+                    # else:
+                    #     if len(selection) <= 2:
+                    #         PB = True
+                    #         selection.append(paperBoy.name)
+                    #         print(selection)
+                    (selection,PB) = self.select(selection,paperBoy.name,PB)
             if paperToy_button.collidepoint((mx, my)):
                 if click:
-                    print('Pick PaperToy')
+                    # print('Pick PaperToy')
+                    if PT == True:
+                        if len(selection) <= 2:
+                            PT = False
+                            selection.remove(paperToy.name)
+                            print(selection)
+                    else:
+                        if len(selection) <= 2:
+                            PT = True
+                            selection.append(paperToy.name)
+                            print(selection)
             if rockson_button.collidepoint((mx, my)):
                 if click:
                     print('Pick Rockson')
