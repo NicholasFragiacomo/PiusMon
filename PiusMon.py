@@ -123,15 +123,23 @@ class PiusMon:
         screen = self.draw_screen('Pick screen',self.width,self.height)
         click = False
         running = True
-        PB,PT = False,False
+        PB,PT,R,RS,SJ,SR = False,False,False,False,False,False
         selection = []
+
+        paperBoy = Fighter('Paperboy','paper',40,20,20)
+        paperToy = Fighter('paperToy','paper',12,12,12)
+
+        rockson = Fighter('Rockson','rock',50,25,25)
+        rocko_Socko = Fighter('RockO SockO','rock',50,25,25)
+
+        scissorFeet_john = Fighter('Scissorfeet John','scissors',50,25,25)
+        scissorFeet_rohn = Fighter('Scissorfeet Rohn','scissors',50,25,25)
         while running:
 
             font = pygame.font.SysFont('PressStart2P-Regular.ttf', 30)
             mx, my = pygame.mouse.get_pos()
 
-            paperBoy = Fighter('Paperboy','rock',40,20,20)
-            paperToy = Fighter('paperToy','paper',12,12,12)
+            
             # print(paperBoy.name)
             # Fighter.attack(paperBoy)
 
@@ -155,21 +163,18 @@ class PiusMon:
 
             if paperBoy_button.collidepoint((mx, my)):
                 if click:
-                    # #print('pick PaperBoy')
-                    # if PB == True:
-                    #     if len(selection) <= 2:
-                    #         PB = False
-                    #         selection.remove(paperBoy.name)
-                    #         print(selection)
-                    # else:
-                    #     if len(selection) <= 2:
-                    #         PB = True
-                    #         selection.append(paperBoy.name)
-                    #         print(selection)
-                    (selection,PB) = self.select(selection,paperBoy.name,PB)
+                    if PB == True:
+                        if len(selection) <= 2:
+                            PB = False
+                            selection.remove(paperBoy.name)
+                            print(selection)
+                    else:
+                        if len(selection) <= 2:
+                            PB = True
+                            selection.append(paperBoy.name)
+                            print(selection)
             if paperToy_button.collidepoint((mx, my)):
                 if click:
-                    # print('Pick PaperToy')
                     if PT == True:
                         if len(selection) <= 2:
                             PT = False
@@ -182,7 +187,16 @@ class PiusMon:
                             print(selection)
             if rockson_button.collidepoint((mx, my)):
                 if click:
-                    print('Pick Rockson')
+                    if R == True:
+                        if len(selection) <= 2:
+                            R = False
+                            selection.remove(paperToy.name)
+                            print(selection)
+                    else:
+                        if len(selection) <= 2:
+                            R = True
+                            selection.append(paperToy.name)
+                            print(selection)
             if rockoSocko_button.collidepoint((mx, my)):
                 if click:
                     print('Pick Rocko Socko')
