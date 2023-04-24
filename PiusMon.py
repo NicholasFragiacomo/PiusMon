@@ -130,10 +130,10 @@ class PiusMon:
         paperToy = Fighter('paperToy','paper',12,12,12)
 
         rockson = Fighter('Rockson','rock',50,25,25)
-        rocko_Socko = Fighter('RockO SockO','rock',50,25,25)
+        rocko_socko = Fighter('RockO SockO','rock',50,25,25)
 
         scissorFeet_john = Fighter('Scissorfeet John','scissors',50,25,25)
-        scissorFeet_rohn = Fighter('Scissorfeet Rohn','scissors',50,25,25)
+        scissorFeet_ron = Fighter('Scissorfeet Rohn','scissors',50,25,25)
         while running:
 
             font = pygame.font.SysFont('PressStart2P-Regular.ttf', 30)
@@ -152,60 +152,81 @@ class PiusMon:
             paperBoy_button = self.draw_fighterButton(200, 150, 120, 175, screen, PB, ('paperBoy').upper(), font, self.textColor,0,True,'Art/paperBoy_1.png',125,200)
             paperToy_button = self.draw_fighterButton(200, 350, 120, 175, screen, PT, 'PAPERTOY', font, self.textColor,0,True,'Art/paperBoy_2.png',125,200)
 
-            rockson_button = self.draw_fighterButton(350, 150, 120, 175, screen, False, 'ROCKSON', font, self.textColor,0,True,'Art/Rockson_1.png',125,200)
-            rockoSocko_button = self.draw_fighterButton(350, 350, 120, 175, screen, False, 'ROCKO SOCKO', font, self.textColor,0,True,'Art/Rockson_2.png',125,200)
+            rockson_button = self.draw_fighterButton(350, 150, 120, 175, screen, R, 'ROCKSON', font, self.textColor,0,True,'Art/Rockson_1.png',125,200)
+            rockoSocko_button = self.draw_fighterButton(350, 350, 120, 175, screen, RS, 'ROCKO SOCKO', font, self.textColor,0,True,'Art/Rockson_2.png',125,200)
 
-            scissorFeetjohn_button = self.draw_fighterButton(500, 150, 120, 175, screen, False, 'SCISSORFEET JOHN', font, self.textColor,0,True,'Art/johnScissorfeet_1.png',125,200)
-            scissorFeetron_button = self.draw_fighterButton(500, 350, 120, 175, screen, False, 'SCISSORFEET RON', font, self.textColor,0,True,'Art/johnSCissorfeet_2.png',125,200)
+            scissorFeetjohn_button = self.draw_fighterButton(500, 150, 120, 175, screen, SJ, 'SCISSORFEET JOHN', font, self.textColor,0,True,'Art/johnScissorfeet_1.png',125,200)
+            scissorFeetron_button = self.draw_fighterButton(500, 350, 120, 175, screen, SR, 'SCISSORFEET RON', font, self.textColor,0,True,'Art/johnSCissorfeet_2.png',125,200)
 
             
 
 
             if paperBoy_button.collidepoint((mx, my)):
                 if click:
-                    if PB == True:
-                        if len(selection) <= 2:
-                            PB = False
-                            selection.remove(paperBoy.name)
-                            print(selection)
-                    else:
-                        if len(selection) <= 2:
+                    if PB == True: 
+                        PB = False
+                        selection.remove(paperBoy.name)
+                        print(selection)
+                    else: 
+                        if len(selection) < 2:  
                             PB = True
                             selection.append(paperBoy.name)
                             print(selection)
             if paperToy_button.collidepoint((mx, my)):
                 if click:
                     if PT == True:
-                        if len(selection) <= 2:
-                            PT = False
-                            selection.remove(paperToy.name)
-                            print(selection)
+                        PT = False
+                        selection.remove(paperToy.name)
+                        print(selection)
                     else:
-                        if len(selection) <= 2:
+                        if len(selection) < 2:
                             PT = True
                             selection.append(paperToy.name)
                             print(selection)
             if rockson_button.collidepoint((mx, my)):
                 if click:
                     if R == True:
-                        if len(selection) <= 2:
-                            R = False
-                            selection.remove(paperToy.name)
-                            print(selection)
+                        R = False
+                        selection.remove(rockson.name)
+                        print(selection)
                     else:
-                        if len(selection) <= 2:
+                        if len(selection) < 2:
                             R = True
-                            selection.append(paperToy.name)
+                            selection.append(rockson.name)
                             print(selection)
             if rockoSocko_button.collidepoint((mx, my)):
                 if click:
-                    print('Pick Rocko Socko')
+                    if RS == True:
+                        RS = False
+                        selection.remove(rocko_socko.name)
+                        print(selection)
+                    else:
+                        if len(selection) < 2:
+                            RS = True
+                            selection.append(rocko_socko.name)
+                            print(selection)
             if scissorFeetjohn_button.collidepoint((mx, my)):
                 if click:
-                    print('Pick Scissorfeet John')
+                    if SJ == True:
+                        SJ = False
+                        selection.remove(scissorFeet_john.name)
+                        print(selection)
+                    else:
+                        if len(selection) < 2:
+                            SJ = True
+                            selection.append(scissorFeet_john.name)
+                            print(selection)
             if scissorFeetron_button.collidepoint((mx, my)):
                 if click:
-                    print('Pick Scissorfeet Ron')
+                    if SR == True:
+                        SR = False
+                        selection.remove(scissorFeet_ron.name)
+                        print(selection)
+                    else:
+                        if len(selection) < 2:
+                            SR = True
+                            selection.append(scissorFeet_ron.name)
+                            print(selection)
 
             if Back_button.collidepoint((mx,my)):
                 if click:
