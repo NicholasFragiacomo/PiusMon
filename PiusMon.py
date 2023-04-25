@@ -36,10 +36,13 @@ class PiusMon:
         self.draw_text(text, font, text_color, screen, x+10, y+10)
         return button
 
-    def draw_fighterButton(self, x, y, width, height, screen, selected, text, font, text_color, outline=0, img = False,img_file='',img_w=10,img_h=10):
+    def draw_fighterButton(self, x, y, width, height, screen, selected,list, text, font, text_color, outline=0, img = False,img_file='',img_w=10,img_h=10):
         button = pygame.Rect(x, y, width, height)
         if selected:
-            button_color = (200, 0, 0)
+            if list[0].lower() == text.lower():
+                button_color = (200, 0, 0)
+            else:
+                button_color = (255,165,0)
         else:
             button_color = (200, 210, 100)
         pygame.draw.rect(screen, (button_color), button, outline)
@@ -93,7 +96,7 @@ class PiusMon:
 
 
             Splayer_button = self.draw_button(350, 400, 200, 50, screen, (200, 210, 100), 'Single Player', font, self.textColor)
-            Mplayer_button = self.draw_button(350, 500, 200, 50, screen, (200, 210, 100), 'Multiplayer', font, self.textColor)
+            #Mplayer_button = self.draw_button(350, 500, 200, 50, screen, (200, 210, 100), 'Multiplayer', font, self.textColor)
 
             self.draw_image(screen,'Art/logo.png',300,20,300,300)
             self.draw_text('PiusMon', font, self.textColor, screen, 400, 200)
@@ -101,9 +104,9 @@ class PiusMon:
             if Splayer_button.collidepoint((mx, my)):
                 if click:
                     self.singlePick_screen(screen)
-            if Mplayer_button.collidepoint((mx, my)):
-                if click:
-                    self.multiPick_screen(screen)
+            # if Mplayer_button.collidepoint((mx, my)):
+            #     if click:
+            #         self.multiPick_screen(screen)
 
             # Events
             click = False
@@ -133,7 +136,7 @@ class PiusMon:
         rocko_socko = Fighter('RockO SockO','rock',50,25,25)
 
         scissorFeet_john = Fighter('Scissorfeet John','scissors',50,25,25)
-        scissorFeet_ron = Fighter('Scissorfeet Rohn','scissors',50,25,25)
+        scissorFeet_ron = Fighter('Scissorfeet Ron','scissors',50,25,25)
         while running:
 
             font = pygame.font.SysFont('PressStart2P-Regular.ttf', 30)
@@ -149,16 +152,17 @@ class PiusMon:
             self.draw_text('Pick PiusMon', font, self.textColor, screen, 250, 40)
             Back_button = self.draw_button(10, 10, 50, 50, screen, (200, 0, 0), '<--', font, self.textColor)
 
-            paperBoy_button = self.draw_fighterButton(200, 150, 120, 175, screen, PB, ('paperBoy').upper(), font, self.textColor,0,True,'Art/paperBoy_1.png',125,200)
-            paperToy_button = self.draw_fighterButton(200, 350, 120, 175, screen, PT, 'PAPERTOY', font, self.textColor,0,True,'Art/paperBoy_2.png',125,200)
+            paperBoy_button = self.draw_fighterButton(200, 150, 120, 175, screen, PB,selection, (paperBoy.name).upper(), font, self.textColor,0,True,'Art/paperBoy_1.png',125,200)
+            paperToy_button = self.draw_fighterButton(200, 350, 120, 175, screen, PT,selection, (paperToy.name).upper(), font, self.textColor,0,True,'Art/paperBoy_2.png',125,200)
 
-            rockson_button = self.draw_fighterButton(350, 150, 120, 175, screen, R, 'ROCKSON', font, self.textColor,0,True,'Art/Rockson_1.png',125,200)
-            rockoSocko_button = self.draw_fighterButton(350, 350, 120, 175, screen, RS, 'ROCKO SOCKO', font, self.textColor,0,True,'Art/Rockson_2.png',125,200)
+            rockson_button = self.draw_fighterButton(350, 150, 120, 175, screen, R,selection, (rockson.name).upper(), font, self.textColor,0,True,'Art/Rockson_1.png',125,200)
+            rockoSocko_button = self.draw_fighterButton(350, 350, 120, 175, screen, RS,selection, (rocko_socko.name).upper(), font, self.textColor,0,True,'Art/Rockson_2.png',125,200)
 
-            scissorFeetjohn_button = self.draw_fighterButton(500, 150, 120, 175, screen, SJ, 'SCISSORFEET JOHN', font, self.textColor,0,True,'Art/johnScissorfeet_1.png',125,200)
-            scissorFeetron_button = self.draw_fighterButton(500, 350, 120, 175, screen, SR, 'SCISSORFEET RON', font, self.textColor,0,True,'Art/johnSCissorfeet_2.png',125,200)
+            scissorFeetjohn_button = self.draw_fighterButton(500, 150, 120, 175, screen, SJ,selection, (scissorFeet_john.name).upper(), font, self.textColor,0,True,'Art/johnScissorfeet_1.png',125,200)
+            scissorFeetron_button = self.draw_fighterButton(500, 350, 120, 175, screen, SR,selection, (scissorFeet_ron.name).upper(), font, self.textColor,0,True,'Art/johnSCissorfeet_2.png',125,200)
 
             
+
 
 
             if paperBoy_button.collidepoint((mx, my)):
