@@ -2,6 +2,7 @@
 import pygame
 import sys
 import random
+import json
 from pygame.locals import *
 import pygame.freetype
 from fighters import Fighter
@@ -15,6 +16,7 @@ class PiusMon:
         self.height = 650
         self.backgroundColor = (100, 150, 200)
         self.textColor = (255, 255, 255)
+        self.fn = "fighters.json"
 
     '''
     Functions
@@ -138,11 +140,21 @@ class PiusMon:
 
         scissorFeet_john = Fighter('Scissorfeet John','scissors',50,25,25)
         scissorFeet_ron = Fighter('Scissorfeet Ron','scissors',50,25,25)
+        
+        
+        with open(self.fn,"r") as f:
+            inp = f.read()
+            print(inp)
+            fighters = json.loads(inp)
         while running:
 
             font = pygame.font.SysFont('PressStart2P-Regular.ttf', 30)
             mx, my = pygame.mouse.get_pos()
 
+            
+            
+            
+            #print(fighters["PB"["name"]])
             
             # print(paperBoy.name)
             # Fighter.attack(paperBoy)
@@ -302,18 +314,17 @@ class PiusMon:
         screen = self.draw_screen('Single player ',self.width,self.height)
         click = False
         running = True
+        
         while running:
 
             font = pygame.font.SysFont('PressStart2P-Regular.ttf', 30)
             mx, my = pygame.mouse.get_pos()
 
             screen.fill(self.backgroundColor)
-            self.draw_text('Splayer PiusMon', font, self.textColor, screen, 250, 40)
+            self.draw_text('Play', font, self.textColor, screen, 250, 40)
             Back_button = self.draw_button(10, 10, 200, 50, screen, (200, 210, 100), '<--', font, self.textColor)
 
-
-            Splayer_button = self.draw_button(400, 400, 200, 50, screen, (200, 210, 100), 'Single Player', font, self.textColor)
-            Mplayer_button = self.draw_button(400, 500, 200, 50, screen, (200, 210, 100), 'Multiplayer', font, self.textColor)
+            
 
             # Button 1 collision
             if Splayer_button.collidepoint((mx, my)):

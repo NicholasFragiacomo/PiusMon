@@ -1,0 +1,44 @@
+{
+    "PB": {
+        "name": "Paperboy",
+        "type": "paper",
+        "speed": 40,
+        "attack": 20,
+        "life": 20
+    },
+    "PT": {
+        "name": "Papertoy",
+        "type": "paper",
+        "speed": 40,
+        "attack": 20,
+        "life": 20
+    },
+    "R": {
+        "name": "Rockson",
+        "type": "rock",
+        "speed": 40,
+        "attack": 20,
+        "life": 20
+    },
+    "RS": {
+        "name": "RockO SockO",
+        "type": "rock",
+        "speed": 40,
+        "attack": 20,
+        "life": 20
+    },
+    "SJ": {
+        "name": "Scissorfeet John",
+        "type": "scissors",
+        "speed": 40,
+        "attack": 20,
+        "life": 20
+    },
+    "SR": {
+        "name": "Scissorfeet Ron",
+        "type": "scissors",
+        "speed": 40,
+        "attack": 20,
+        "life": 20
+    }
+}
