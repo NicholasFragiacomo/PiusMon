@@ -4,41 +4,47 @@
         "type": "paper",
         "speed": 40,
         "attack": 20,
-        "life": 20
+        "life": 20,
+        "img_file": "Art/paperBoy_1.png"
     },
     "PT": {
         "name": "Papertoy",
         "type": "paper",
         "speed": 40,
         "attack": 20,
-        "life": 20
+        "life": 20,
+        "img_file": "Art/paperBoy_2.png"
     },
     "R": {
         "name": "Rockson",
         "type": "rock",
         "speed": 40,
         "attack": 20,
-        "life": 20
+        "life": 20,
+        "img_file": "Art/Rockson_1.png"
     },
     "RS": {
         "name": "RockO SockO",
         "type": "rock",
         "speed": 40,
         "attack": 20,
-        "life": 20
+        "life": 20,
+        "img_file": "Art/Rockson_2.png"
     },
     "SJ": {
         "name": "Scissorfeet John",
         "type": "scissors",
         "speed": 40,
         "attack": 20,
-        "life": 20
+        "life": 20,
+        "img_file": "Art/johnScissorfeet_1.png"
     },
     "SR": {
         "name": "Scissorfeet Ron",
         "type": "scissors",
         "speed": 40,
         "attack": 20,
-        "life": 20
+        "life": 20,
+        "img_file": "Art/johnScissorfeet_2.png"
     }
 }
