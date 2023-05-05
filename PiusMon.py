@@ -38,7 +38,7 @@ class PiusMon:
         self.draw_text(text, font, text_color, screen, x+10, y+10)
         return button
 
-    def draw_fighterButton(self, x, y, width, height, screen, selected,list,key, text, font, text_color, outline=0, img = False,img_file='',img_w=10,img_h=10):
+    def draw_fighterButton(self, x, y, width, height, screen, selected,list,key, text, font, text_color, outline=0, img = False,img_file='',img_w=10,img_h=10,flip = False):
         button = pygame.Rect(x, y, width, height)
         if selected:
             if list[0] == key:
@@ -50,7 +50,7 @@ class PiusMon:
         pygame.draw.rect(screen, (button_color), button, outline)
         self.draw_text(text, font, text_color, screen, x+10, y+10)
         if img:
-            self.draw_image(screen,img_file,x,y,img_w,img_h)
+            self.draw_image(screen,img_file,flip,x,y,img_w,img_h)
         return button
     
 
@@ -60,10 +60,13 @@ class PiusMon:
         textrect.topleft = (x, y)
         surface.blit(textobj, textrect)
 
-    def draw_image(self, screen, img_file,x,y,w,h):
+    def draw_image(self, screen, img_file,flip,x,y,w,h):
         img = pygame.image.load(img_file).convert_alpha()
         img = pygame.transform.smoothscale(img, (w, h)) 
+        if flip == True:
+            img = pygame.transform.flip(img, True, False)
         screen.blit(img,(x,y))
+        
 
     def select(self,selection,fighter_key,XX):
         if XX == True:
@@ -100,7 +103,7 @@ class PiusMon:
             Splayer_button = self.draw_button(350, 400, 200, 50, screen, (200, 210, 100), 'Single Player', font, self.textColor)
             #Mplayer_button = self.draw_button(350, 500, 200, 50, screen, (200, 210, 100), 'Multiplayer', font, self.textColor)
 
-            self.draw_image(screen,'Art/logo.png',300,20,300,300)
+            self.draw_image(screen,'Art/logo.png',False,300,20,300,300)
             self.draw_text('PiusMon', font, self.textColor, screen, 400, 200)
             # Button 1 collision
             if Splayer_button.collidepoint((mx, my)):
@@ -163,14 +166,14 @@ class PiusMon:
             self.draw_text('Pick PiusMon', font, self.textColor, screen, 250, 40)
             Back_button = self.draw_button(10, 10, 50, 50, screen, (200, 0, 0), '<--', font, self.textColor)
 
-            paperBoy_button = self.draw_fighterButton(200, 150, 120, 175, screen, PB,selection,'PB', (paperBoy.name).upper(), font, self.textColor,0,True,'Art/paperBoy_1.png',125,200)
-            paperToy_button = self.draw_fighterButton(200, 350, 120, 175, screen, PT,selection,'PT', (paperToy.name).upper(), font, self.textColor,0,True,'Art/paperBoy_2.png',125,200)
+            paperBoy_button = self.draw_fighterButton(200, 150, 120, 175, screen, PB,selection,'PB', (paperBoy.name).upper(), font, self.textColor,0,True,'Art/paperBoy_1.png',125,200,False)
+            paperToy_button = self.draw_fighterButton(200, 350, 120, 175, screen, PT,selection,'PT', (paperToy.name).upper(), font, self.textColor,0,True,'Art/paperBoy_2.png',125,200,False)
 
-            rockson_button = self.draw_fighterButton(350, 150, 120, 175, screen, R,selection,'R' ,(rockson.name).upper(), font, self.textColor,0,True,'Art/Rockson_1.png',125,200)
-            rockoSocko_button = self.draw_fighterButton(350, 350, 120, 175, screen, RS,selection,'RS', (rocko_socko.name).upper(), font, self.textColor,0,True,'Art/Rockson_2.png',125,200)
+            rockson_button = self.draw_fighterButton(350, 150, 120, 175, screen, R,selection,'R' ,(rockson.name).upper(), font, self.textColor,0,True,'Art/Rockson_1.png',125,200,False)
+            rockoSocko_button = self.draw_fighterButton(350, 350, 120, 175, screen, RS,selection,'RS', (rocko_socko.name).upper(), font, self.textColor,0,True,'Art/Rockson_2.png',125,200,False)
 
-            scissorFeetjohn_button = self.draw_fighterButton(500, 150, 120, 175, screen, SJ,selection, 'SJ', (scissorFeet_john.name).upper(), font, self.textColor,0,True,'Art/johnScissorfeet_1.png',125,200)
-            scissorFeetron_button = self.draw_fighterButton(500, 350, 120, 175, screen, SR,selection,'SR', (scissorFeet_ron.name).upper(), font, self.textColor,0,True,'Art/johnSCissorfeet_2.png',125,200)
+            scissorFeetjohn_button = self.draw_fighterButton(500, 150, 120, 175, screen, SJ,selection, 'SJ', (scissorFeet_john.name).upper(), font, self.textColor,0,True,'Art/johnScissorfeet_1.png',125,200,False)
+            scissorFeetron_button = self.draw_fighterButton(500, 350, 120, 175, screen, SR,selection,'SR', (scissorFeet_ron.name).upper(), font, self.textColor,0,True,'Art/johnSCissorfeet_2.png',125,200,False)
 
             
             ready_button = self.draw_button(350, 550, 200, 50, screen, (0,200,0), 'READY', font, self.textColor)
@@ -275,6 +278,8 @@ class PiusMon:
         click = False
         running = True
 
+        PM = ["PB","PT","R","RS","SJ","SR"]
+
         with open(self.fn,"r") as f:
             inp = f.read()
             #print(inp)
@@ -282,11 +287,18 @@ class PiusMon:
 
             fightingMon = selection[0]
             restingMon = selection[1]
+
+            enemy1 = random.choice(PM)
+            PM.remove(enemy1)
+            enemy2 = random.choice(PM)
+
+            P_enemyMon = Fighter(fighters[enemy1]['name'],fighters[enemy1]['type'],fighters[enemy1]['speed'],fighters[enemy1]['attack'],fighters[enemy1]['life'])
+            S_enemyMon = Fighter(fighters[enemy2]['name'],fighters[enemy2]['type'],fighters[enemy2]['speed'],fighters[enemy2]['attack'],fighters[enemy2]['life'])
             
-            P_primeMon = Fighter(fighters[fightingMon]['name'],fighters[fightingMon]['type'],fighters[fightingMon]['speed'],fighters[fightingMon]['attack'],fighters[fightingMon]['life'])
-            S_primeMon = Fighter(fighters[restingMon]['name'],fighters[restingMon]['type'],fighters[restingMon]['speed'],fighters[restingMon]['attack'],fighters[restingMon]['life'])
+            P_playerMon = Fighter(fighters[fightingMon]['name'],fighters[fightingMon]['type'],fighters[fightingMon]['speed'],fighters[fightingMon]['attack'],fighters[fightingMon]['life'])
+            S_playerMon = Fighter(fighters[restingMon]['name'],fighters[restingMon]['type'],fighters[restingMon]['speed'],fighters[restingMon]['attack'],fighters[restingMon]['life'])
         
-            print(P_primeMon.name)
+        
         while running:
 
             font = pygame.font.SysFont('PressStart2P-Regular.ttf', 30)
@@ -294,11 +306,14 @@ class PiusMon:
 
             screen.fill(self.backgroundColor)
             self.draw_text('Play', font, self.textColor, screen, 250, 40)
-            Back_button = self.draw_button(10, 10, 200, 50, screen, (200, 210, 100), '<--', font, self.textColor)
+            Back_button = self.draw_button(10, 10, 50, 50, screen, (200, 0, 0), '<--', font, self.textColor)
 
+            self.draw_image(screen, fighters[fightingMon]['img_file'],False, 100, 200, 400, 400)
+            self.draw_image(screen, fighters[restingMon]['img_file'],False, 25, 250, 200, 200)
 
-            self.draw_image(screen, fighters[fightingMon]['img_file'], 100, 250, 400, 400)
-            self.draw_image(screen, fighters[restingMon]['img_file'], 25, 300, 200, 200)
+            self.draw_image(screen, fighters[enemy1]['img_file'],True, 400, 200, 400, 400)
+            self.draw_image(screen, fighters[enemy2]['img_file'],True, 700, 250, 200, 200)
+
 
             # if Mplayer_button.collidepoint((mx, my)):
             #     if click:
@@ -312,6 +327,9 @@ class PiusMon:
                 if event.type == MOUSEBUTTONDOWN:
                     if event.button == 1:
                         click = True
+                if Back_button.collidepoint((mx,my)):
+                    if click:
+                        running = False
 
             pygame.display.update()
             mainClock.tick(60)
