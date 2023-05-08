@@ -67,6 +67,11 @@ class PiusMon:
             img = pygame.transform.flip(img, True, False)
         screen.blit(img,(x,y))
         
+    def draw_card(self,screen,x,y,w,h,PiusMon,flip,fighters_list,fighters_file,font,color):
+
+        self.draw_image(screen, fighters_file[PiusMon]['img_file'], flip, x, y, w, h)
+        #life
+        self.draw_text(f"{fighters_file[PiusMon].key() : fighters_file[PiusMon]['life']}",font,color,screen,x,y)
 
     def select(self,selection,fighter_key,XX):
         if XX == True:
@@ -81,6 +86,8 @@ class PiusMon:
                     selection = selection.append(fighter_key)
                     print(selection)
                     return (selection,XX)
+
+    
 
     '''
     Screens
@@ -308,11 +315,13 @@ class PiusMon:
             self.draw_text('Play', font, self.textColor, screen, 250, 40)
             Back_button = self.draw_button(10, 10, 50, 50, screen, (200, 0, 0), '<--', font, self.textColor)
 
-            self.draw_image(screen, fighters[fightingMon]['img_file'],False, 100, 200, 400, 400)
+            #self.draw_image(screen, fighters[fightingMon]['img_file'],False, 100, 200, 400, 400)
             self.draw_image(screen, fighters[restingMon]['img_file'],False, 25, 250, 200, 200)
 
             self.draw_image(screen, fighters[enemy1]['img_file'],True, 400, 200, 400, 400)
             self.draw_image(screen, fighters[enemy2]['img_file'],True, 700, 250, 200, 200)
+
+            self.draw_card(screen, 100, 200, 400, 400, fightingMon, False, PM, fighters, font, self.textColor)
 
 
             # if Mplayer_button.collidepoint((mx, my)):
