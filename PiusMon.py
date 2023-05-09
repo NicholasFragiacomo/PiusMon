@@ -70,8 +70,10 @@ class PiusMon:
     def draw_card(self,screen,x,y,w,h,PiusMon,flip,fighters_list,fighters_file,font,color):
 
         self.draw_image(screen, fighters_file[PiusMon]['img_file'], flip, x, y, w, h)
-        #life
-        self.draw_text(f"{fighters_file[PiusMon].key() : fighters_file[PiusMon]['life']}",font,color,screen,x,y)
+        self.draw_text(f"{fighters_file[PiusMon]['name']}",font,color,screen,x+150,y)
+        self.draw_text(f"Life : {fighters_file[PiusMon]['life']}",font,color,screen,x+150,y+325)
+        self.draw_text(f"speed : {fighters_file[PiusMon]['speed']}",font,color,screen,x+150,y+350)
+        self.draw_text(f"attack : {fighters_file[PiusMon]['attack']}",font,color,screen,x+150,y+375)
 
     def select(self,selection,fighter_key,XX):
         if XX == True:
@@ -315,13 +317,15 @@ class PiusMon:
             self.draw_text('Play', font, self.textColor, screen, 250, 40)
             Back_button = self.draw_button(10, 10, 50, 50, screen, (200, 0, 0), '<--', font, self.textColor)
 
-            #self.draw_image(screen, fighters[fightingMon]['img_file'],False, 100, 200, 400, 400)
-            self.draw_image(screen, fighters[restingMon]['img_file'],False, 25, 250, 200, 200)
+            
+            self.draw_card(screen, 100, 200, 400, 400, fightingMon, False, PM, fighters, font, self.textColor)
+            self.draw_card(screen, 25, 250, 200, 200, restingMon, False, PM, fighters, font, self.textColor)
+            
+            #self.draw_image(screen, fighters[restingMon]['img_file'],False, 25, 250, 200, 200)
 
             self.draw_image(screen, fighters[enemy1]['img_file'],True, 400, 200, 400, 400)
             self.draw_image(screen, fighters[enemy2]['img_file'],True, 700, 250, 200, 200)
 
-            self.draw_card(screen, 100, 200, 400, 400, fightingMon, False, PM, fighters, font, self.textColor)
 
 
             # if Mplayer_button.collidepoint((mx, my)):
