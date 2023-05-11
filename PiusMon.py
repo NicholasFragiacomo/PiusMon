@@ -328,6 +328,9 @@ class PiusMon:
 
 
 
+            swap_Button = self.draw_button(400, 400, 100, 50, screen, (0,200,0), 'swap', font, self.textColor)
+
+
             # if Mplayer_button.collidepoint((mx, my)):
             #     if click:
                     
@@ -343,6 +346,10 @@ class PiusMon:
                 if Back_button.collidepoint((mx,my)):
                     if click:
                         running = False
+                if swap_Button.collidepoint((mx,my)):
+                    if click:
+                        fightingMon,restingMon = restingMon,fightingMon
+                        #fightingMon.swap()
 
             pygame.display.update()
             mainClock.tick(60)
