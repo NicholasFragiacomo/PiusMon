@@ -144,14 +144,14 @@ class PiusMon:
         PB,PT,R,RS,SJ,SR = False,False,False,False,False,False
         selection = []
 
-        paperBoy = Fighter('Paperboy','paper',40,20,20)
-        paperToy = Fighter('paperToy','paper',12,12,12)
+        paperBoy = Fighter('PB','Paperboy','paper',40,20,20)
+        paperToy = Fighter('PT','paperToy','paper',12,12,12)
 
-        rockson = Fighter('Rockson','rock',50,25,25)
-        rocko_socko = Fighter('RockO SockO','rock',50,25,25)
+        rockson = Fighter('R','Rockson','rock',50,25,25)
+        rocko_socko = Fighter('RS','RockO SockO','rock',50,25,25)
 
-        scissorFeet_john = Fighter('Scissorfeet John','scissors',50,25,25)
-        scissorFeet_ron = Fighter('Scissorfeet Ron','scissors',50,25,25)
+        scissorFeet_john = Fighter('SJ','Scissorfeet John','scissors',50,25,25)
+        scissorFeet_ron = Fighter('SR','Scissorfeet Ron','scissors',50,25,25)
         
         
         with open(self.fn,"r") as f:
@@ -301,11 +301,11 @@ class PiusMon:
             PM.remove(enemy1)
             enemy2 = random.choice(PM)
 
-            P_enemyMon = Fighter(fighters[enemy1]['name'],fighters[enemy1]['type'],fighters[enemy1]['speed'],fighters[enemy1]['attack'],fighters[enemy1]['life'])
-            S_enemyMon = Fighter(fighters[enemy2]['name'],fighters[enemy2]['type'],fighters[enemy2]['speed'],fighters[enemy2]['attack'],fighters[enemy2]['life'])
+            P_enemyMon = Fighter(enemy1,fighters[enemy1]['name'],fighters[enemy1]['type'],fighters[enemy1]['speed'],fighters[enemy1]['attack'],fighters[enemy1]['life'])
+            S_enemyMon = Fighter(enemy2,fighters[enemy2]['name'],fighters[enemy2]['type'],fighters[enemy2]['speed'],fighters[enemy2]['attack'],fighters[enemy2]['life'])
             
-            P_playerMon = Fighter(fighters[fightingMon]['name'],fighters[fightingMon]['type'],fighters[fightingMon]['speed'],fighters[fightingMon]['attack'],fighters[fightingMon]['life'])
-            S_playerMon = Fighter(fighters[restingMon]['name'],fighters[restingMon]['type'],fighters[restingMon]['speed'],fighters[restingMon]['attack'],fighters[restingMon]['life'])
+            P_playerMon = Fighter(fightingMon,fighters[fightingMon]['name'],fighters[fightingMon]['type'],fighters[fightingMon]['speed'],fighters[fightingMon]['attack'],fighters[fightingMon]['life'])
+            S_playerMon = Fighter(restingMon,fighters[restingMon]['name'],fighters[restingMon]['type'],fighters[restingMon]['speed'],fighters[restingMon]['attack'],fighters[restingMon]['life'])
         
         
         while running:
@@ -328,7 +328,9 @@ class PiusMon:
 
 
 
-            swap_Button = self.draw_button(400, 400, 100, 50, screen, (0,200,0), 'swap', font, self.textColor)
+            swap_Button = self.draw_button(400, 500, 100, 50, screen, (0,200,0), 'swap', font, self.textColor)
+
+            attack_Button = self.draw_button(400, 425, 100, 50, screen, (0,200,0), 'attack', font, self.textColor)
 
 
             # if Mplayer_button.collidepoint((mx, my)):
@@ -339,7 +341,7 @@ class PiusMon:
             click = False
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    running = False
+                    running = False 
                 if event.type == MOUSEBUTTONDOWN:
                     if event.button == 1:
                         click = True
@@ -350,11 +352,17 @@ class PiusMon:
                     if click:
                         fightingMon,restingMon = restingMon,fightingMon
                         #fightingMon.swap()
+                if attack_Button.collidepoint((mx,my)):
+                    if click:
+                        if fightingMon == P_playerMon.key:
+                            P_playerMon.Attack()
 
             pygame.display.update()
             mainClock.tick(60)
 
-    def multiPick_screen(self,screen):
+    def multiPick_screen(self,screen):  
+
+
 
         screen = self.draw_screen('Pick screen',self.width,self.height)
         click = False

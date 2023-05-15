@@ -1,15 +1,16 @@
 class Fighter:
     
-    def __init__(self,name,type,speed,attack,life):
+    def __init__(self,key,name,type,speed,attack,life):
         
+        self.key = key
         self.name = name
         self.type = type
         self.speed = speed
         self.attack = attack
         self.life = life
 
-    def attack(self):
-        print(f'attack: {self.attack}')
+    def Attack(self):
+        print(f'attack: ')
 
     def swap(self):
         print('Swap')
