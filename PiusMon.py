@@ -67,11 +67,23 @@ class PiusMon:
             img = pygame.transform.flip(img, True, False)
         screen.blit(img,(x,y))
         
-    def draw_card(self,screen,x,y,w,h,PiusMon,flip,fighters_list,fighters_file,font,color):
+    def draw_card2(self,screen,x,y,w,h,PiusMon,flip,fighters_list,fighters_file,font,color,resting=False):
 
         self.draw_image(screen, fighters_file[PiusMon]['img_file'], flip, x, y, w, h)
+        if resting == True:
+            x= x-150
         self.draw_text(f"{fighters_file[PiusMon]['name']}",font,color,screen,x+150,y)
         self.draw_text(f"Life : {fighters_file[PiusMon]['life']}",font,color,screen,x+150,y+325)
+        self.draw_text(f"speed : {fighters_file[PiusMon]['speed']}",font,color,screen,x+150,y+350)
+        self.draw_text(f"attack : {fighters_file[PiusMon]['attack']}",font,color,screen,x+150,y+375)
+
+    def draw_card(self,screen,x,y,w,h,PiusMon,PM,flip,fighters_list,fighters_file,font,color,resting=False):
+
+        self.draw_image(screen, fighters_file[PiusMon]['img_file'], flip, x, y, w, h)
+        if resting == True:
+            x= x-150   
+        self.draw_text(f"{fighters_file[PiusMon]['name']}",font,color,screen,x+150,y)
+        self.draw_text(f"Life : {PM.life}",font,color,screen,x+150,y+325)
         self.draw_text(f"speed : {fighters_file[PiusMon]['speed']}",font,color,screen,x+150,y+350)
         self.draw_text(f"attack : {fighters_file[PiusMon]['attack']}",font,color,screen,x+150,y+375)
 
@@ -318,24 +330,26 @@ class PiusMon:
             Back_button = self.draw_button(10, 10, 50, 50, screen, (200, 0, 0), '<--', font, self.textColor)
 
             
-            self.draw_card(screen, 100, 200, 400, 400, fightingMon, False, PM, fighters, font, self.textColor)
-            self.draw_card(screen, 25, 250, 200, 200, restingMon, False, PM, fighters, font, self.textColor)
+            self.draw_card(screen, 100, 200, 400, 400, fightingMon,P_playerMon, False, PM, fighters, font, self.textColor)
+            self.draw_card(screen, 25, 250, 200, 200, restingMon,S_playerMon, False, PM, fighters, font, self.textColor,True)
+
+            #self.draw_card2(screen, 400, 200, 400, 400, enemy1,P_enemyMon, True, PM, fighters, font, self.textColor)
+
             
-            #self.draw_image(screen, fighters[restingMon]['img_file'],False, 25, 250, 200, 200)
+            
+            self.draw_card(screen, 400, 200, 400, 400, enemy1,P_enemyMon, True, PM, fighters, font, self.textColor)
+            self.draw_card(screen, 700, 250, 200, 200, enemy2,S_enemyMon, True, PM, fighters, font, self.textColor,True)
 
-            self.draw_image(screen, fighters[enemy1]['img_file'],True, 400, 200, 400, 400)
-            self.draw_image(screen, fighters[enemy2]['img_file'],True, 700, 250, 200, 200)
+            #self.draw_image(screen, fighters[enemy2]['img_file'],True, 700, 250, 200, 200)
 
+            action_bar = self.draw_button(300, 75, 200, 50, screen, (0,23,200), 'text', font, self.textColor)
 
 
             swap_Button = self.draw_button(400, 500, 100, 50, screen, (0,200,0), 'swap', font, self.textColor)
-
             attack_Button = self.draw_button(400, 425, 100, 50, screen, (0,200,0), 'attack', font, self.textColor)
 
 
-            # if Mplayer_button.collidepoint((mx, my)):
-            #     if click:
-                    
+
 
             # Events
             click = False
@@ -355,7 +369,7 @@ class PiusMon:
                 if attack_Button.collidepoint((mx,my)):
                     if click:
                         if fightingMon == P_playerMon.key:
-                            P_playerMon.Attack()
+                            P_playerMon.Attack(P_playerMon,P_enemyMon)
 
             pygame.display.update()
             mainClock.tick(60)

@@ -9,8 +9,28 @@ class Fighter:
         self.attack = attack
         self.life = life
 
-    def Attack(self):
+    def Attack(self,fighter,defender):
         print(f'attack: ')
+        print(fighter.attack)
+        multiplier  = 1
+        if fighter.type == 'paper':
+            if defender.type == 'rock':
+                multiplier =2
+            if defender.type == 'scissors':
+                multiplier = 0.5
+        if fighter.type == 'rock':
+            if defender.type == 'scissors':
+                multiplier =2
+            if defender.type == 'paper':
+                multiplier = 0.5   
+        if fighter.type == 'scissors':
+            if defender.type == 'paper':
+                multiplier =2
+            if defender.type == 'rock':
+                multiplier = 0.5     
+        
+        defender.life = defender.life - (fighter.attack*multiplier)
+        print(defender.life)
 
     def swap(self):
         print('Swap')
