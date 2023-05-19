@@ -103,6 +103,8 @@ class PiusMon:
 
     
 
+    
+
     '''
     Screens
     '''
@@ -300,6 +302,7 @@ class PiusMon:
         running = True
 
         PM = ["PB","PT","R","RS","SJ","SR"]
+        
 
         with open(self.fn,"r") as f:
             inp = f.read()
@@ -339,16 +342,17 @@ class PiusMon:
             
             self.draw_card(screen, 400, 200, 400, 400, enemy1,P_enemyMon, True, PM, fighters, font, self.textColor)
             self.draw_card(screen, 700, 250, 200, 200, enemy2,S_enemyMon, True, PM, fighters, font, self.textColor,True)
+  
 
-            #self.draw_image(screen, fighters[enemy2]['img_file'],True, 700, 250, 200, 200)
-
-            action_bar = self.draw_button(300, 75, 200, 50, screen, (0,23,200), 'text', font, self.textColor)
-
+            bar_txt = f"{fighters[fightingMon]['type']} vs {fighters[enemy1]['type']}"
+            effect_txt = f" "
+            action_bar = self.draw_button(300, 75, 200, 50, screen, (0,23,200), bar_txt, font, self.textColor)
+            effect_bar = self.draw_button(300, 90, 200, 25, screen, (0,23,200), bar_txt, font, self.textColor)
 
             swap_Button = self.draw_button(400, 500, 100, 50, screen, (0,200,0), 'swap', font, self.textColor)
             attack_Button = self.draw_button(400, 425, 100, 50, screen, (0,200,0), 'attack', font, self.textColor)
 
-
+                
 
 
             # Events
@@ -370,6 +374,7 @@ class PiusMon:
                     if click:
                         if fightingMon == P_playerMon.key:
                             P_playerMon.Attack(P_playerMon,P_enemyMon)
+                
 
             pygame.display.update()
             mainClock.tick(60)
