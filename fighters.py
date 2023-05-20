@@ -29,6 +29,9 @@ class Fighter:
             if defender.type == 'rock':
                 multiplier = 0.5     
 
+        defender.life = defender.life - (fighter.attack*multiplier)
+        print(defender.life)
+
     def something(self,fighter,defender):
         if fighter.type == 'paper':
             if defender.type == 'rock':
@@ -54,13 +57,13 @@ class Fighter:
 Main
 '''
 
-def main():
+#def main():
 
-    F = Fighters()
+    #F = Fighters()
 
     
     
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
