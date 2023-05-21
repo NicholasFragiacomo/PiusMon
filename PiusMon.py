@@ -300,8 +300,10 @@ class PiusMon:
         screen = self.draw_screen('Single player ',self.width,self.height)
         click = False
         running = True
+        turn = False
 
         PM = ["PB","PT","R","RS","SJ","SR"]
+        choices = ['att','swap']
         
 
         with open(self.fn,"r") as f:
@@ -322,7 +324,8 @@ class PiusMon:
             P_playerMon = Fighter(fightingMon,fighters[fightingMon]['name'],fighters[fightingMon]['type'],fighters[fightingMon]['speed'],fighters[fightingMon]['attack'],fighters[fightingMon]['life'])
             S_playerMon = Fighter(restingMon,fighters[restingMon]['name'],fighters[restingMon]['type'],fighters[restingMon]['speed'],fighters[restingMon]['attack'],fighters[restingMon]['life'])
         
-        
+        if P_playerMon.speed > P_enemyMon.speed:
+            turn = True
         while running:
 
             font = pygame.font.SysFont('PressStart2P-Regular.ttf', 30)
@@ -346,13 +349,14 @@ class PiusMon:
 
             bar_txt = f"{fighters[fightingMon]['type']} vs {fighters[enemy1]['type']}"
             effect_txt = P_playerMon.something(P_playerMon,P_enemyMon)
-            action_bar = self.draw_button(300, 75, 200, 50, screen, (0,23,200), bar_txt, font, self.textColor)
-            effect_bar = self.draw_button(300, 90, 200, 25, screen, (0,23,200), effect_txt, font, self.textColor)
+            action_bar = self.draw_button(300, 75, 200, 25, screen, (0,23,200), bar_txt, font, self.textColor)
+            effect_bar = self.draw_button(300, 120, 200, 25, screen, (0,23,200), effect_txt, font, self.textColor)
 
             swap_Button = self.draw_button(400, 500, 100, 50, screen, (0,200,0), 'swap', font, self.textColor)
             attack_Button = self.draw_button(400, 425, 100, 50, screen, (0,200,0), 'attack', font, self.textColor)
 
-                
+            
+            
 
 
             # Events
@@ -368,13 +372,47 @@ class PiusMon:
                         running = False
                 if swap_Button.collidepoint((mx,my)):
                     if click:
-                        fightingMon,restingMon = restingMon,fightingMon
+                        if turn:
+                            fightingMon,restingMon = restingMon,fightingMon
+                            turn = False
                         #fightingMon.swap()
                 if attack_Button.collidepoint((mx,my)):
                     if click:
+                        if turn:
+                            if fightingMon == P_playerMon.key:
+                                if enemy1 == P_enemyMon.key:
+                                    P_playerMon.Attack(P_playerMon,P_enemyMon)
+                                    turn = False
+                                else:
+                                    P_playerMon.Attack(P_playerMon,S_enemyMon)
+                                    turn = False
+                            else:
+                                if enemy1 == P_enemyMon.key:
+                                    S_playerMon.Attack(S_playerMon,P_enemyMon)
+                                    turn = False
+                                else:
+                                    S_playerMon.Attack(S_playerMon,S_enemyMon)
+                                    turn = False
+            if turn == False:
+                move = random.choice(choices)
+                if move == 'att':
+                    if enemy1 == P_enemyMon.key:
                         if fightingMon == P_playerMon.key:
-                            P_playerMon.Attack(P_playerMon,P_enemyMon)
-
+                            P_enemyMon.Attack(P_enemyMon,P_playerMon)
+                            turn = False
+                        else:
+                            P_enemyMon.Attack(P_enemyMon,S_playerMon)
+                            turn = False
+                    else:
+                        if enemy1 == P_enemyMon.key:
+                            S_enemyMon.Attack(S_enemyMon,P_playerMon)
+                            turn = False
+                        else:
+                            S_enemyMon.Attack(S_enemyMon,S_playerMon)
+                            turn = False
+                if move == 'swap':
+                    enemy1,enemy2 = enemy2,enemy1
+                turn = True
 
                 
 
