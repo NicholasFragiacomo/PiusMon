@@ -398,20 +398,27 @@ class PiusMon:
                 if move == 'att':
                     if enemy1 == P_enemyMon.key:
                         if fightingMon == P_playerMon.key:
+                            
                             P_enemyMon.Attack(P_enemyMon,P_playerMon)
                             turn = False
                         else:
+                            
                             P_enemyMon.Attack(P_enemyMon,S_playerMon)
                             turn = False
                     else:
                         if enemy1 == P_enemyMon.key:
+                            
                             S_enemyMon.Attack(S_enemyMon,P_playerMon)
                             turn = False
                         else:
+                            
                             S_enemyMon.Attack(S_enemyMon,S_playerMon)
                             turn = False
                 if move == 'swap':
+                    
                     enemy1,enemy2 = enemy2,enemy1
+                    
+                pygame.time.wait(3000)
                 turn = True
 
                 
