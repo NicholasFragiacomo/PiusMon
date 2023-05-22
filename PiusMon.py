@@ -302,6 +302,7 @@ class PiusMon:
         running = True
         turn = False
 
+
         PM = ["PB","PT","R","RS","SJ","SR"]
         choices = ['att','swap']
         
@@ -335,16 +336,19 @@ class PiusMon:
             self.draw_text('Play', font, self.textColor, screen, 250, 40)
             Back_button = self.draw_button(10, 10, 50, 50, screen, (200, 0, 0), '<--', font, self.textColor)
 
+            if P_playerMon.life >= 0:
+                self.draw_card(screen, 100, 200, 400, 400, fightingMon,P_playerMon, False, PM, fighters, font, self.textColor)
             
-            self.draw_card(screen, 100, 200, 400, 400, fightingMon,P_playerMon, False, PM, fighters, font, self.textColor)
-            self.draw_card(screen, 25, 250, 200, 200, restingMon,S_playerMon, False, PM, fighters, font, self.textColor,True)
+            if S_playerMon.life >= 0:
+                self.draw_card(screen, 25, 250, 200, 200, restingMon,S_playerMon, False, PM, fighters, font, self.textColor,True)
 
             #self.draw_card2(screen, 400, 200, 400, 400, enemy1,P_enemyMon, True, PM, fighters, font, self.textColor)
 
+            if P_enemyMon.life >= 0:
+                self.draw_card(screen, 400, 200, 400, 400, enemy1,P_enemyMon, True, PM, fighters, font, self.textColor)
             
-            
-            self.draw_card(screen, 400, 200, 400, 400, enemy1,P_enemyMon, True, PM, fighters, font, self.textColor)
-            self.draw_card(screen, 700, 250, 200, 200, enemy2,S_enemyMon, True, PM, fighters, font, self.textColor,True)
+            if S_enemyMon.life >= 0:
+                self.draw_card(screen, 700, 250, 200, 200, enemy2,S_enemyMon, True, PM, fighters, font, self.textColor,True)
   
 
             bar_txt = f"{fighters[fightingMon]['type']} vs {fighters[enemy1]['type']}"
@@ -352,12 +356,14 @@ class PiusMon:
             action_bar = self.draw_button(300, 75, 200, 25, screen, (0,23,200), bar_txt, font, self.textColor)
             effect_bar = self.draw_button(300, 120, 200, 25, screen, (0,23,200), effect_txt, font, self.textColor)
 
-            swap_Button = self.draw_button(400, 500, 100, 50, screen, (0,200,0), 'swap', font, self.textColor)
+            if P_playerMon.life > 0 and S_playerMon.life > 0:
+                swap_Button = self.draw_button(400, 500, 100, 50, screen, (0,200,0), 'swap', font, self.textColor)
+            
             attack_Button = self.draw_button(400, 425, 100, 50, screen, (0,200,0), 'attack', font, self.textColor)
 
             
             
-
+            
 
             # Events
             click = False
@@ -418,7 +424,7 @@ class PiusMon:
                     
                     enemy1,enemy2 = enemy2,enemy1
                     
-                pygame.time.wait(3000)
+                #pygame.time.wait(3000)
                 turn = True
 
                 
