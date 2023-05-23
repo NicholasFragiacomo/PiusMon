@@ -340,29 +340,29 @@ class PiusMon:
             self.draw_text('Play', font, self.textColor, screen, 250, 40)
             Back_button = self.draw_button(10, 10, 50, 50, screen, (200, 0, 0), '<--', font, self.textColor)
 
-            if check1 == False:
-                if P_playerMon.life > 0: # if the player is still alive
-                    self.draw_card(screen, 100, 200, 400, 400, fightingMon,P_playerMon, False, PM, fighters, font, self.textColor)
-                else:
-                    if P_playerMon.life  and S_playerMon.life < 0: #check if they are both dead
-                        running = False
-                    check1 = False
-                    fightingMon,restingMon = restingMon,fightingMon
+            # if check1 == False:
+            #     if P_playerMon.life > 0: # if the player is still alive
+            #         self.draw_card(screen, 100, 200, 400, 400, fightingMon,P_playerMon, False, PM, fighters, font, self.textColor)
+            #     else:
+            #         if P_playerMon.life  and S_playerMon.life < 0: #check if they are both dead
+            #             running = False
+            #         check1 = True
+            #         fightingMon,restingMon = restingMon,fightingMon
 
-            # if P_playerMon.life > 0: # if the player is still alive
-            #     self.draw_card(screen, 100, 200, 400, 400, fightingMon,P_playerMon, False, PM, fighters, font, self.textColor)
+            if P_playerMon.life > 0: # if the player is still alive
+                self.draw_card(screen, 100, 200, 400, 400, fightingMon,P_playerMon, False, PM, fighters, font, self.textColor)
 
-            if check2 == False:
-                if S_playerMon.life > 0:
-                    self.draw_card(screen, 25, 250, 200, 200, restingMon,S_playerMon, False, PM, fighters, font, self.textColor,True)
-                else:
-                    if P_playerMon.life  and S_playerMon.life < 0:
-                        running = False
-                    check2 = False
-                    fightingMon,restingMon = restingMon,fightingMon
+            # if check2 == False:
+            #     if S_playerMon.life > 0:
+            #         self.draw_card(screen, 25, 250, 200, 200, restingMon,S_playerMon, False, PM, fighters, font, self.textColor,True)
+            #     else:
+            #         if P_playerMon.life  and S_playerMon.life < 0:
+            #             running = False
+            #         check2 = True
+            #         #fightingMon,restingMon = restingMon,fightingMon
             
-            # if S_playerMon.life > 0:
-            #     self.draw_card(screen, 25, 250, 200, 200, restingMon,S_playerMon, False, PM, fighters, font, self.textColor,True)
+            if S_playerMon.life > 0:
+                self.draw_card(screen, 25, 250, 200, 200, restingMon,S_playerMon, False, PM, fighters, font, self.textColor,True)
 
          
 
