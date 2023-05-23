@@ -324,6 +324,7 @@ class PiusMon:
             
             P_playerMon = Fighter(fightingMon,fighters[fightingMon]['name'],fighters[fightingMon]['type'],fighters[fightingMon]['speed'],fighters[fightingMon]['attack'],fighters[fightingMon]['life'])
             S_playerMon = Fighter(restingMon,fighters[restingMon]['name'],fighters[restingMon]['type'],fighters[restingMon]['speed'],fighters[restingMon]['attack'],fighters[restingMon]['life'])
+            effect_txt = P_playerMon.something(P_playerMon,P_enemyMon)
         
         if P_playerMon.speed > P_enemyMon.speed:
             turn = True
@@ -338,7 +339,7 @@ class PiusMon:
 
             if P_playerMon.life >= 0:
                 self.draw_card(screen, 100, 200, 400, 400, fightingMon,P_playerMon, False, PM, fighters, font, self.textColor)
-            
+                
             if S_playerMon.life >= 0:
                 self.draw_card(screen, 25, 250, 200, 200, restingMon,S_playerMon, False, PM, fighters, font, self.textColor,True)
 
@@ -351,17 +352,13 @@ class PiusMon:
                 self.draw_card(screen, 700, 250, 200, 200, enemy2,S_enemyMon, True, PM, fighters, font, self.textColor,True)
   
 
-            bar_txt = f"{fighters[fightingMon]['type']} vs {fighters[enemy1]['type']}"
-            effect_txt = P_playerMon.something(P_playerMon,P_enemyMon)
-            action_bar = self.draw_button(300, 75, 200, 25, screen, (0,23,200), bar_txt, font, self.textColor)
-            effect_bar = self.draw_button(300, 120, 200, 25, screen, (0,23,200), effect_txt, font, self.textColor)
-
+ 
             if P_playerMon.life > 0 and S_playerMon.life > 0:
                 swap_Button = self.draw_button(400, 500, 100, 50, screen, (0,200,0), 'swap', font, self.textColor)
             
             attack_Button = self.draw_button(400, 425, 100, 50, screen, (0,200,0), 'attack', font, self.textColor)
 
-            
+                                                                            
             
             
 
@@ -380,6 +377,7 @@ class PiusMon:
                     if click:
                         if turn:
                             fightingMon,restingMon = restingMon,fightingMon
+                            effect_txt = "PLAYER SWAPS"
                             turn = False
                         #fightingMon.swap()
                 if attack_Button.collidepoint((mx,my)):
@@ -388,46 +386,57 @@ class PiusMon:
                             if fightingMon == P_playerMon.key:
                                 if enemy1 == P_enemyMon.key:
                                     P_playerMon.Attack(P_playerMon,P_enemyMon)
+                                    effect_txt = "PLAYER ATTACKS"
                                     turn = False
                                 else:
                                     P_playerMon.Attack(P_playerMon,S_enemyMon)
+                                    effect_txt = "PLAYER ATTACKS"
                                     turn = False
                             else:
                                 if enemy1 == P_enemyMon.key:
                                     S_playerMon.Attack(S_playerMon,P_enemyMon)
+                                    effect_txt = "PLAYER ATTACKS"
                                     turn = False
                                 else:
                                     S_playerMon.Attack(S_playerMon,S_enemyMon)
+                                    effect_txt = "PLAYER ATTACKS"
                                     turn = False
+    
             if turn == False:
+                effect_txt = "LOADING"
+                effect_bar = self.draw_button(300, 120, 200, 25, screen, (0,23,200), effect_txt, font, self.textColor)
+                pygame.time.wait(3000)
                 move = random.choice(choices)
                 if move == 'att':
                     if enemy1 == P_enemyMon.key:
                         if fightingMon == P_playerMon.key:
-                            
+                            effect_txt = "ENEMY ATTACKS"
                             P_enemyMon.Attack(P_enemyMon,P_playerMon)
                             turn = False
                         else:
-                            
+                            effect_txt = "ENEMY ATTACKS"
                             P_enemyMon.Attack(P_enemyMon,S_playerMon)
                             turn = False
                     else:
                         if enemy1 == P_enemyMon.key:
-                            
+                            effect_txt = "ENEMY ATTACKS"
                             S_enemyMon.Attack(S_enemyMon,P_playerMon)
                             turn = False
                         else:
-                            
+                            effect_txt = "ENEMY ATTACKS"
                             S_enemyMon.Attack(S_enemyMon,S_playerMon)
                             turn = False
                 if move == 'swap':
-                    
+                    effect_txt = "ENEMY SWAPS"
                     enemy1,enemy2 = enemy2,enemy1
                     
-                #pygame.time.wait(3000)
+                #
                 turn = True
 
-                
+            bar_txt = f"{fighters[fightingMon]['type']} vs {fighters[enemy1]['type']}"
+            action_bar = self.draw_button(300, 75, 200, 25, screen, (0,23,200), bar_txt, font, self.textColor)
+            effect_bar = self.draw_button(300, 120, 200, 25, screen, (0,23,200), effect_txt, font, self.textColor)
+
 
             pygame.display.update()
             mainClock.tick(60)
