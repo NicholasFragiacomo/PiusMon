@@ -328,6 +328,7 @@ class PiusMon:
 
         check1 = False
         check2 = False
+        check3 = False
         
         if P_playerMon.speed > P_enemyMon.speed:
             turn = True
@@ -349,9 +350,14 @@ class PiusMon:
             #         check1 = True
             #         fightingMon,restingMon = restingMon,fightingMon
 
-            if P_playerMon.life > 0: # if the player is still alive
-                self.draw_card(screen, 100, 200, 400, 400, fightingMon,P_playerMon, False, PM, fighters, font, self.textColor)
-
+            if check1 == False:
+                if P_playerMon.life > 0: # if the player is still alive
+                    self.draw_card(screen, 100, 200, 400, 400, fightingMon,P_playerMon, False, PM, fighters, font, self.textColor)
+                else:
+                    print('player died')
+                    fightingMon,restingMon = restingMon,fightingMon
+                    P_playerMon,S_playerMon = S_playerMon,P_playerMon
+                    check2 = True
             # if check2 == False:
             #     if S_playerMon.life > 0:
             #         self.draw_card(screen, 25, 250, 200, 200, restingMon,S_playerMon, False, PM, fighters, font, self.textColor,True)
@@ -360,18 +366,31 @@ class PiusMon:
             #             running = False
             #         check2 = True
             #         #fightingMon,restingMon = restingMon,fightingMon
+
+            #when one mf dies make the reesting one invisible and swape
             
-            if S_playerMon.life > 0:
-                self.draw_card(screen, 25, 250, 200, 200, restingMon,S_playerMon, False, PM, fighters, font, self.textColor,True)
+            if check2 ==False:
+                if S_playerMon.life > 0:
+                    self.draw_card(screen, 25, 250, 200, 200, restingMon,S_playerMon, False, PM, fighters, font, self.textColor,True)
+                # else:
+                #     fightingMon,restingMon = restingMon,fightingMon
+                #     check2 = True
 
          
 
-            if P_enemyMon.life >= 0:
+
+            if P_enemyMon.life > 0:
                 self.draw_card(screen, 400, 200, 400, 400, enemy1,P_enemyMon, True, PM, fighters, font, self.textColor)
+            else:            
+                print("enemy died")
+                enemy1,enemy2 = enemy2,enemy2
+                P_playerMon,S_playerMon = S_playerMon,P_playerMon
+                check3 = True
             
-            if S_enemyMon.life >= 0:
-                self.draw_card(screen, 700, 250, 200, 200, enemy2,S_enemyMon, True, PM, fighters, font, self.textColor,True)
-  
+            if check3 == False:
+                if S_enemyMon.life > 0:
+                    self.draw_card(screen, 700, 250, 200, 200, enemy2,S_enemyMon, True, PM, fighters, font, self.textColor,True)
+
 
  
             if P_playerMon.life > 0 and S_playerMon.life > 0:
@@ -380,7 +399,8 @@ class PiusMon:
 
             attack_Button = self.draw_button(400, 425, 100, 50, screen, (0,200,0), 'attack', font, self.textColor)
 
-                                                                            
+          
+
             
             
 
@@ -399,7 +419,9 @@ class PiusMon:
                     if click:
                         if turn:
                             fightingMon,restingMon = restingMon,fightingMon
+                            P_playerMon,S_playerMon = S_playerMon,P_playerMon
                             effect_txt = "PLAYER SWAPS"
+                            print(effect_txt)
                             turn = False
                         #fightingMon.swap()
                 if attack_Button.collidepoint((mx,my)):
@@ -426,8 +448,8 @@ class PiusMon:
     
             if turn == False:
                 effect_txt = "LOADING"
-                effect_bar = self.draw_button(300, 120, 200, 25, screen, (0,23,200), effect_txt, font, self.textColor)
-                #pygame.time.wait(3000)
+                effect_bar = self.draw_button(300, 200, 200, 25, screen, (0,23,200), effect_txt, font, self.textColor)
+                pygame.time.wait(3000)
                 if P_enemyMon.life and S_enemyMon.life<0:
                     move = random.choice(choices)
                 else:
@@ -438,6 +460,7 @@ class PiusMon:
                         if fightingMon == P_playerMon.key:
                             effect_txt = "ENEMY ATTACKS"
                             P_enemyMon.Attack(P_enemyMon,P_playerMon)
+                            print('enemt attacks')
                             turn = False
                         else:
                             effect_txt = "ENEMY ATTACKS"
@@ -455,10 +478,18 @@ class PiusMon:
                 if move == 'swap':
                     effect_txt = "ENEMY SWAPS"
                     enemy1,enemy2 = enemy2,enemy1
+                    P_enemyMon,S_enemyMon = S_enemyMon,P_enemyMon
+                    print('enemy swap')
                     
-                # if P_playerMon.life and S_playerMon.life <=0:
-                #     running = False
-                # #
+                if P_playerMon.life and S_playerMon.life <=0:
+                    print('enemy won')
+                    running = False
+
+                if P_enemyMon.life and S_enemyMon.life <= 0:
+                    print('player won')
+                    running = False
+
+                
                 turn = True
 
             bar_txt = f"{fighters[fightingMon]['type']} vs {fighters[enemy1]['type']}"
