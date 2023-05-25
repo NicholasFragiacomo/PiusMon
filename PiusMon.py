@@ -7,6 +7,7 @@ from pygame.locals import *
 import pygame.freetype
 from fighters import Fighter
 import fighters
+import time
 
 class PiusMon:
 
@@ -350,14 +351,17 @@ class PiusMon:
             #         check1 = True
             #         fightingMon,restingMon = restingMon,fightingMon
 
-            if check1 == False:
-                if P_playerMon.life > 0: # if the player is still alive
-                    self.draw_card(screen, 100, 200, 400, 400, fightingMon,P_playerMon, False, PM, fighters, font, self.textColor)
-                else:
+
+            if P_playerMon.life > 0: # if the player is still alive
+                self.draw_card(screen, 100, 200, 400, 400, fightingMon,P_playerMon, False, PM, fighters, font, (self.textColor))
+            else:
+                if check1 == False:
                     print('player died')
                     fightingMon,restingMon = restingMon,fightingMon
                     P_playerMon,S_playerMon = S_playerMon,P_playerMon
                     check2 = True
+                    check1 =True
+
             # if check2 == False:
             #     if S_playerMon.life > 0:
             #         self.draw_card(screen, 25, 250, 200, 200, restingMon,S_playerMon, False, PM, fighters, font, self.textColor,True)
@@ -378,14 +382,15 @@ class PiusMon:
 
          
 
-
+            
             if P_enemyMon.life > 0:
                 self.draw_card(screen, 400, 200, 400, 400, enemy1,P_enemyMon, True, PM, fighters, font, self.textColor)
             else:            
-                print("enemy died")
-                enemy1,enemy2 = enemy2,enemy2
-                P_playerMon,S_playerMon = S_playerMon,P_playerMon
-                check3 = True
+                if check3 == False:
+                    print("enemy died")
+                    enemy1,enemy2 = enemy2,enemy2
+                    P_enemyMon,S_enemyMon = S_enemyMon,P_enemyMon
+                    check3 = True
             
             if check3 == False:
                 if S_enemyMon.life > 0:
@@ -449,7 +454,8 @@ class PiusMon:
             if turn == False:
                 effect_txt = "LOADING"
                 effect_bar = self.draw_button(300, 200, 200, 25, screen, (0,23,200), effect_txt, font, self.textColor)
-                pygame.time.wait(3000)
+                pygame.display.update()
+                pygame.time.wait(2000)
                 if P_enemyMon.life and S_enemyMon.life<0:
                     move = random.choice(choices)
                 else:
@@ -490,12 +496,14 @@ class PiusMon:
                     running = False
 
                 
+                
                 turn = True
 
             bar_txt = f"{fighters[fightingMon]['type']} vs {fighters[enemy1]['type']}"
             action_bar = self.draw_button(300, 75, 200, 25, screen, (0,23,200), bar_txt, font, self.textColor)
             effect_bar = self.draw_button(300, 120, 200, 25, screen, (0,23,200), effect_txt, font, self.textColor)
 
+            
 
             pygame.display.update()
             mainClock.tick(60)
