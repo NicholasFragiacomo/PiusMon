@@ -9,6 +9,26 @@ from fighters import Fighter
 import fighters
 import time
 
+
+'''TODO:
+
+GamePlay:
+- [X]when in battle a trainer may choose 2 thingsattack (may expand) or swap.
+- [X]the monster with the fastest speed will hit first.
+- []if you choose to swap and your monster is the fastest he may swap and not get hit
+- []if you choose to swap and he is the slowest he will take the damage from the attack first.
+- []trainers may only swap 3 times per battle
+- [X]If a PiusMon is Knocked out he is instantly switched with the next PiusMon
+- [X]If there are no other Piusmon left the other player is the winner
+
+Animation:
+- [X]normal state
+- []attacking state
+- []getting hit
+
+
+    '''
+
 class PiusMon:
 
     def __init__(self):
@@ -130,7 +150,7 @@ class PiusMon:
         while running:
             
 
-            font = pygame.font.SysFont('PressStart2P-Regular.ttf', 30)
+            font = pygame.font.Font('PressStart2P-Regular.ttf', 30)
             mx, my = pygame.mouse.get_pos()
 
             screen.fill(self.backgroundColor)
@@ -192,7 +212,6 @@ class PiusMon:
         
         with open(self.fn,"r") as f:
             inp = f.read()
-            #print(inp)
             fighters = json.loads(inp)
         while running:
 
@@ -200,9 +219,6 @@ class PiusMon:
             mx, my = pygame.mouse.get_pos()
 
             
-            
-            
-            #print(fighters['PB'])
             
 
             
@@ -327,6 +343,8 @@ class PiusMon:
 
         PM = ["PB","PT","R","RS","SJ","SR"]
         choices = ['att','swap']
+
+        score = [0,0]
         
 
         with open(self.fn,"r") as f:
@@ -509,12 +527,14 @@ class PiusMon:
                     print('enemy swap')
                     
                 if P_playerMon.life and S_playerMon.life <=0:
-                    print('enemy won')
-                    running = False
+                    winer = "ENEMY"
+                    score[1]+=1
+                    self.win_screen(winer,score)
 
                 if P_enemyMon.life and S_enemyMon.life <= 0:
-                    print('player won')
-                    running = False
+                    winer = "PLAYER"
+                    score[0]+=1
+                    self.win_screen(winer,score)
 
                 
                 
@@ -570,6 +590,67 @@ class PiusMon:
             mainClock.tick(60)
 
 
+    def win_screen(self,winer,score):
+
+        screen = self.draw_screen('PiusMon',self.width,self.height)
+        click = False
+        running = True
+
+
+        logo_sprite = ["Art\Sprite sheets\Logo\planet-1.png.png",
+        "Art\Sprite sheets\Logo\planet-2.png.png",
+        "Art\Sprite sheets\Logo\planet-3.png.png",
+        "Art\Sprite sheets\Logo\planet-4.png.png",
+        "Art\Sprite sheets\Logo\planet-5.png.png",
+        "Art\Sprite sheets\Logo\planet-6.png.png",]
+        sprite_value = 0
+
+
+
+        while running:
+            
+
+            font = pygame.font.SysFont('PressStart2P-Regular.ttf', 30)
+            mx, my = pygame.mouse.get_pos()
+
+            screen.fill(self.backgroundColor)
+
+
+
+            sprite_value +=0.1
+            logo = logo_sprite[int(sprite_value)]
+            if sprite_value >= len(logo_sprite)-1:
+                sprite_value = 0
+            self.draw_image(screen,logo,False,300,20,300,300)
+
+            self.draw_text(f'{winer} won!', font, self.textColor, screen, 400, 200)
+            self.draw_text("Score", font, self.textColor, screen, 400, 300)
+            self.draw_text(f"{score[0]}:{score[1]}", font, self.textColor, screen, 400, 350)
+
+            playAgain_button = self.draw_button(250, 400, 200, 50, screen, (200, 210, 100), 'PLAY AGAIN', font, self.textColor)
+            #Mplayer_button = self.draw_button(350, 500, 200, 50, screen, (200, 210, 100), 'Multiplayer', font, self.textColor)
+
+            menu_button = self.draw_button(500, 400, 200, 50, screen, (200,210,100), "MAIN MENU", font, self.textColor)
+
+
+            # Button 1 collision
+            # if Splayer_button.collidepoint((mx, my)):
+            #     if click:
+            #         self.singlePick_screen(screen)
+            
+
+            # Events
+            click = False
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                if event.type == MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        click = True
+
+            pygame.display.update()
+            mainClock.tick(60)
+
 
 '''
 Main
@@ -584,6 +665,7 @@ def main():
     mainClock = pygame.time.Clock()
 
     PM.start_screen()
+    #PM.win_screen()
 
 
 if __name__ == "__main__":
