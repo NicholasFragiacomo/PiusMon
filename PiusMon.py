@@ -115,6 +115,18 @@ class PiusMon:
         screen = self.draw_screen('PiusMon',self.width,self.height)
         click = False
         running = True
+
+
+        logo_sprite = ["Art\Sprite sheets\Logo\planet-1.png.png",
+        "Art\Sprite sheets\Logo\planet-2.png.png",
+        "Art\Sprite sheets\Logo\planet-3.png.png",
+        "Art\Sprite sheets\Logo\planet-4.png.png",
+        "Art\Sprite sheets\Logo\planet-5.png.png",
+        "Art\Sprite sheets\Logo\planet-6.png.png",]
+        sprite_value = 0
+
+
+
         while running:
             
 
@@ -124,10 +136,19 @@ class PiusMon:
             screen.fill(self.backgroundColor)
 
 
+
+            sprite_value +=0.1
+            logo = logo_sprite[int(sprite_value)]
+            
+            if sprite_value >= len(logo_sprite)-1:
+                sprite_value = 0
+
+
             Splayer_button = self.draw_button(350, 400, 200, 50, screen, (200, 210, 100), 'Single Player', font, self.textColor)
             #Mplayer_button = self.draw_button(350, 500, 200, 50, screen, (200, 210, 100), 'Multiplayer', font, self.textColor)
 
-            self.draw_image(screen,'Art/logo.png',False,300,20,300,300)
+            self.draw_image(screen,logo,False,300,20,300,300)
+
             self.draw_text('PiusMon', font, self.textColor, screen, 400, 200)
             # Button 1 collision
             if Splayer_button.collidepoint((mx, my)):
