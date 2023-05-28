@@ -17,7 +17,7 @@ GamePlay:
 - [X]the monster with the fastest speed will hit first.
 - []if you choose to swap and your monster is the fastest he may swap and not get hit
 - []if you choose to swap and he is the slowest he will take the damage from the attack first.
-- []trainers may only swap 3 times per battle
+- [X]trainers may only swap 3 times per battle
 - [X]If a PiusMon is Knocked out he is instantly switched with the next PiusMon
 - [X]If there are no other Piusmon left the other player is the winner
 
@@ -182,7 +182,9 @@ class PiusMon:
             click = False
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    running = False
+                    pygame.quit()
+                    sys.exit()
+
                 if event.type == MOUSEBUTTONDOWN:
                     if event.button == 1:
                         click = True
@@ -322,7 +324,8 @@ class PiusMon:
             click = False
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    running = False
+                    pygame.quit()
+                    sys.exit()
                 if event.type == MOUSEBUTTONDOWN:
                     if event.button == 1:
                         click = True
@@ -369,6 +372,9 @@ class PiusMon:
         check1 = False
         check2 = False
         check3 = False
+
+        P_swaps = 3
+        E_swaps = 3
         
         if P_playerMon.speed > P_enemyMon.speed:
             turn = True
@@ -381,6 +387,8 @@ class PiusMon:
             self.draw_text('Play', font, self.textColor, screen, 250, 40)
             Back_button = self.draw_button(10, 10, 50, 50, screen, (200, 0, 0), '<--', font, self.textColor)
 
+            self.draw_text(f"Player Swaps:{P_swaps}", font, self.textColor, screen, 20, 200)
+            self.draw_text(f"Enemy Swaps:{E_swaps}", font, self.textColor, screen, 725, 200)
             # if check1 == False:
             #     if P_playerMon.life > 0: # if the player is still alive
             #         self.draw_card(screen, 100, 200, 400, 400, fightingMon,P_playerMon, False, PM, fighters, font, self.textColor)
@@ -438,7 +446,8 @@ class PiusMon:
 
  
             if P_playerMon.life > 0 and S_playerMon.life > 0:
-                swap_Button = self.draw_button(400, 500, 100, 50, screen, (0,200,0), 'swap', font, self.textColor)
+                if P_swaps > 0:
+                    swap_Button = self.draw_button(400, 500, 100, 50, screen, (0,200,0), 'swap', font, self.textColor)
             
 
             attack_Button = self.draw_button(400, 425, 100, 50, screen, (0,200,0), 'attack', font, self.textColor)
@@ -452,7 +461,8 @@ class PiusMon:
             click = False
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    running = False 
+                    pygame.quit()
+                    sys.exit()
                 if event.type == MOUSEBUTTONDOWN:
                     if event.button == 1:
                         click = True
@@ -467,6 +477,7 @@ class PiusMon:
                             effect_txt = "PLAYER SWAPS"
                             print(effect_txt)
                             turn = False
+                            P_swaps -= 1
                         #fightingMon.swap()
                 if attack_Button.collidepoint((mx,my)):
                     if click:
@@ -496,7 +507,10 @@ class PiusMon:
                 pygame.display.update()
                 pygame.time.wait(2000)
                 if P_enemyMon.life and S_enemyMon.life<0:
-                    move = random.choice(choices)
+                    if E_swaps > 0:
+                        move = random.choice(choices)
+                    else:
+                        move = 'att'
                 else:
                     move = 'att'
 
@@ -525,6 +539,7 @@ class PiusMon:
                     enemy1,enemy2 = enemy2,enemy1
                     P_enemyMon,S_enemyMon = S_enemyMon,P_enemyMon
                     print('enemy swap')
+                    E_swaps -=1
                     
                 if P_playerMon.life and S_playerMon.life <=0:
                     winer = "ENEMY"
@@ -581,7 +596,8 @@ class PiusMon:
             click = False
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    running = False
+                    pygame.quit()
+                    sys.exit()
                 if event.type == MOUSEBUTTONDOWN:
                     if event.button == 1:
                         click = True
@@ -634,16 +650,20 @@ class PiusMon:
 
 
             # Button 1 collision
-            # if Splayer_button.collidepoint((mx, my)):
-            #     if click:
-            #         self.singlePick_screen(screen)
+            if playAgain_button.collidepoint((mx, my)):
+                if click:
+                    self.singlePick_screen(screen)
+            if menu_button.collidepoint((mx, my)):
+                if click:
+                    self.start_screen()
             
 
             # Events
             click = False
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    running = False
+                    pygame.quit()
+                    sys.exit()
                 if event.type == MOUSEBUTTONDOWN:
                     if event.button == 1:
                         click = True
