@@ -24,8 +24,8 @@ GamePlay:
 
 Animation:
 - [X]normal state
-- []attacking state
-- []getting hit
+- [X]attacking state
+- [X]getting hit
 
 
     '''
@@ -99,9 +99,9 @@ class PiusMon:
         self.draw_text(f"speed : {fighters_file[PiusMon]['speed']}",font,color,screen,x+150,y+350)
         self.draw_text(f"attack : {fighters_file[PiusMon]['attack']}",font,color,screen,x+150,y+375)
 
-    def draw_card(self,screen,x,y,w,h,PiusMon,PM,flip,fighters_list,fighters_file,font,color,resting=False):
+    def draw_card(self,screen,x,y,w,h,PiusMon,PM,flip,fighters_list,fighters_file,frame,font,color,resting=False):
 
-        self.draw_image(screen, fighters_file[PiusMon]['img_file'], flip, x, y, w, h)
+        self.draw_image(screen, fighters_file[PiusMon]['img_file'][frame], flip, x, y, w, h)
         if resting == True:
             x= x-150   
         self.draw_text(f"{fighters_file[PiusMon]['name']}",font,color,screen,x+150,y)
@@ -376,6 +376,11 @@ class PiusMon:
 
         P_swaps = 3
         E_swaps = 3
+
+        PPMon_ani = 0
+        PSMon_ani = 0
+        EPMon_ani = 0
+        ESMon_ani = 0
         
         if P_playerMon.speed > P_enemyMon.speed:
             turn = True
@@ -401,7 +406,7 @@ class PiusMon:
 
 
             if P_playerMon.life > 0: # if the player is still alive
-                self.draw_card(screen, 100, 200, 400, 400, fightingMon,P_playerMon, False, PM, fighters, font, (self.textColor))
+                self.draw_card(screen, 100, 200, 400, 400, fightingMon,P_playerMon, False, PM, fighters,PPMon_ani, font, (self.textColor))
             else:
                 if check1 == False:
                     print('player died')
@@ -423,7 +428,7 @@ class PiusMon:
             
             if check2 ==False:
                 if S_playerMon.life > 0:
-                    self.draw_card(screen, 25, 250, 200, 200, restingMon,S_playerMon, False, PM, fighters, font, self.textColor,True)
+                    self.draw_card(screen, 25, 250, 200, 200, restingMon,S_playerMon, False, PM, fighters,PSMon_ani, font, self.textColor,True)
                 # else:
                 #     fightingMon,restingMon = restingMon,fightingMon
                 #     check2 = True
@@ -432,7 +437,7 @@ class PiusMon:
 
             
             if P_enemyMon.life > 0:
-                self.draw_card(screen, 400, 200, 400, 400, enemy1,P_enemyMon, True, PM, fighters, font, self.textColor)
+                self.draw_card(screen, 400, 200, 400, 400, enemy1,P_enemyMon, True, PM, fighters,EPMon_ani, font, self.textColor)
             else:            
                 if check3 == False:
                     print("enemy died")
@@ -442,7 +447,7 @@ class PiusMon:
             
             if check3 == False:
                 if S_enemyMon.life > 0:
-                    self.draw_card(screen, 700, 250, 200, 200, enemy2,S_enemyMon, True, PM, fighters, font, self.textColor,True)
+                    self.draw_card(screen, 700, 250, 200, 200, enemy2,S_enemyMon, True, PM, fighters,ESMon_ani, font, self.textColor,True)
 
 
  
@@ -453,7 +458,7 @@ class PiusMon:
 
             attack_Button = self.draw_button(400, 425, 100, 50, screen, (0,200,0), 'attack', font, self.textColor)
 
-          
+          # for images just make the json file have a list of images and by defult the first one is restingi and if its attack then just change the json imaage o t the next one
 
             
             
@@ -486,19 +491,27 @@ class PiusMon:
                             if fightingMon == P_playerMon.key:
                                 if enemy1 == P_enemyMon.key:
                                     P_playerMon.Attack(P_playerMon,P_enemyMon)
+                                    PPMon_ani = 1
+                                    EPMon_ani = 2
                                     effect_txt = "PLAYER ATTACKS"
                                     turn = False
                                 else:
                                     P_playerMon.Attack(P_playerMon,S_enemyMon)
+                                    PPMon_ani = 1
+                                    ESMon_ani = 2
                                     effect_txt = "PLAYER ATTACKS"
                                     turn = False
                             else:
                                 if enemy1 == P_enemyMon.key:
                                     S_playerMon.Attack(S_playerMon,P_enemyMon)
+                                    PSMon_ani = 1
+                                    EPMon_ani = 2
                                     effect_txt = "PLAYER ATTACKS"
                                     turn = False
                                 else:
                                     S_playerMon.Attack(S_playerMon,S_enemyMon)
+                                    PSMon_ani = 1
+                                    ESMon_ani = 2
                                     effect_txt = "PLAYER ATTACKS"
                                     turn = False
     
@@ -520,20 +533,28 @@ class PiusMon:
                         if fightingMon == P_playerMon.key:
                             effect_txt = "ENEMY ATTACKS"
                             P_enemyMon.Attack(P_enemyMon,P_playerMon)
+                            PPMon_ani = 2
+                            EPMon_ani = 1
                             print('enemt attacks')
                             turn = False
                         else:
                             effect_txt = "ENEMY ATTACKS"
                             P_enemyMon.Attack(P_enemyMon,S_playerMon)
+                            PSMon_ani = 2
+                            EPMon_ani = 1
                             turn = False
                     else:
                         if enemy1 == P_enemyMon.key:
                             effect_txt = "ENEMY ATTACKS"
                             S_enemyMon.Attack(S_enemyMon,P_playerMon)
+                            PPMon_ani = 2
+                            ESMon_ani = 1
                             turn = False
                         else:
                             effect_txt = "ENEMY ATTACKS"
                             S_enemyMon.Attack(S_enemyMon,S_playerMon)
+                            PSMon_ani = 2
+                            ESMon_ani = 1
                             turn = False
                 if move == 'swap':
                     effect_txt = "ENEMY SWAPS"
