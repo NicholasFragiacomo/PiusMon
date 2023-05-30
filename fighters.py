@@ -8,7 +8,7 @@ class Fighter:
         self.speed = speed
         self.attack = attack
         self.life = life
-        
+            
 
     def Attack(self,fighter,defender):
         print(f'attack: ')

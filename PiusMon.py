@@ -84,7 +84,7 @@ class PiusMon:
 
     def draw_image(self, screen, img_file,flip,x,y,w,h):
         img = pygame.image.load(img_file).convert_alpha()
-        img = pygame.transform.smoothscale(img, (w, h)) 
+        img = pygame.transform.scale(img, (w, h)) 
         if flip == True:
             img = pygame.transform.flip(img, True, False)
         screen.blit(img,(x,y))
@@ -382,6 +382,7 @@ class PiusMon:
         EPMon_ani = 0
         ESMon_ani = 0
         
+        
         if P_playerMon.speed > P_enemyMon.speed:
             turn = True
         while running:
@@ -405,6 +406,7 @@ class PiusMon:
             #         fightingMon,restingMon = restingMon,fightingMon
 
 
+
             if P_playerMon.life > 0: # if the player is still alive
                 self.draw_card(screen, 100, 200, 400, 400, fightingMon,P_playerMon, False, PM, fighters,PPMon_ani, font, (self.textColor))
             else:
@@ -415,23 +417,11 @@ class PiusMon:
                     check2 = True
                     check1 =True
 
-            # if check2 == False:
-            #     if S_playerMon.life > 0:
-            #         self.draw_card(screen, 25, 250, 200, 200, restingMon,S_playerMon, False, PM, fighters, font, self.textColor,True)
-            #     else:
-            #         if P_playerMon.life  and S_playerMon.life < 0:
-            #             running = False
-            #         check2 = True
-            #         #fightingMon,restingMon = restingMon,fightingMon
-
-            #when one mf dies make the reesting one invisible and swape
+         
             
             if check2 ==False:
                 if S_playerMon.life > 0:
                     self.draw_card(screen, 25, 250, 200, 200, restingMon,S_playerMon, False, PM, fighters,PSMon_ani, font, self.textColor,True)
-                # else:
-                #     fightingMon,restingMon = restingMon,fightingMon
-                #     check2 = True
 
          
 
@@ -449,7 +439,7 @@ class PiusMon:
                 if S_enemyMon.life > 0:
                     self.draw_card(screen, 700, 250, 200, 200, enemy2,S_enemyMon, True, PM, fighters,ESMon_ani, font, self.textColor,True)
 
-
+            
  
             if P_playerMon.life > 0 and S_playerMon.life > 0:
                 if P_swaps > 0:
@@ -460,7 +450,7 @@ class PiusMon:
 
           # for images just make the json file have a list of images and by defult the first one is restingi and if its attack then just change the json imaage o t the next one
 
-            
+            #make it so within each attack thing where it changes the animation you draw another card
             
 
             # Events
@@ -495,6 +485,7 @@ class PiusMon:
                                     EPMon_ani = 2
                                     effect_txt = "PLAYER ATTACKS"
                                     turn = False
+
                                 else:
                                     P_playerMon.Attack(P_playerMon,S_enemyMon)
                                     PPMon_ani = 1
@@ -514,12 +505,14 @@ class PiusMon:
                                     ESMon_ani = 2
                                     effect_txt = "PLAYER ATTACKS"
                                     turn = False
+
+            
     
             if turn == False:
                 effect_txt = "LOADING"
                 effect_bar = self.draw_button(300, 200, 200, 25, screen, (0,23,200), effect_txt, font, self.textColor)
                 pygame.display.update()
-                pygame.time.wait(2000)
+                pygame.time.delay(2000)
                 if P_enemyMon.life and S_enemyMon.life<0:
                     if E_swaps > 0:
                         move = random.choice(choices)
@@ -556,6 +549,7 @@ class PiusMon:
                             PSMon_ani = 2
                             ESMon_ani = 1
                             turn = False
+                            
                 if move == 'swap':
                     effect_txt = "ENEMY SWAPS"
                     enemy1,enemy2 = enemy2,enemy1
@@ -581,6 +575,8 @@ class PiusMon:
             action_bar = self.draw_button(300, 75, 200, 25, screen, (0,23,200), bar_txt, font, self.textColor)
             effect_bar = self.draw_button(300, 120, 200, 25, screen, (0,23,200), effect_txt, font, self.textColor)
 
+            
+            
             
 
             pygame.display.update()
