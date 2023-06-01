@@ -548,8 +548,8 @@ class PiusMon:
 
             if ready_button.collidepoint((mx,my)):
                 if click:
-                    if len(P1_selection) == 2:
-                        self.Mplayer_screen(screen,P1_selection,score)
+                    if len(P1_selection) == 2 and len(P2_selection) == 2:
+                        self.Mplayer_screen(screen,P1_selection,P2_selection,score)
 
 
             # Events
@@ -918,34 +918,151 @@ class PiusMon:
             pygame.display.update()
             mainClock.tick(60)
 
-    def Mplayer_screen(self,screen):  
+    def Mplayer_screen(self,screen,P1_selection,P2_selection,score):
 
-
-
-        screen = self.draw_screen('Pick screen',self.width,self.height)
+        screen = self.draw_screen('Multiplayer ',self.width,self.height)
         click = False
         running = True
+        turn = False
+
+
+        PM = ["PB","PT","R","RS","SJ","SR"]
+        choices = ['att','swap']
+
+        
+        
+
+        with open(self.fn,"r") as f:
+            inp = f.read()
+            #print(inp)
+            fighters = json.loads(inp)
+
+            fightingMon = P1_selection[0]
+            restingMon = P1_selection[1]
+
+            enemy1 = P2_selection[0]
+            
+            enemy2 = P2_selection[1]
+
+            P_enemyMon = Fighter(enemy1,fighters[enemy1]['name'],fighters[enemy1]['type'],fighters[enemy1]['speed'],fighters[enemy1]['attack'],fighters[enemy1]['life'])
+            S_enemyMon = Fighter(enemy2,fighters[enemy2]['name'],fighters[enemy2]['type'],fighters[enemy2]['speed'],fighters[enemy2]['attack'],fighters[enemy2]['life'])
+            
+            P_playerMon = Fighter(fightingMon,fighters[fightingMon]['name'],fighters[fightingMon]['type'],fighters[fightingMon]['speed'],fighters[fightingMon]['attack'],fighters[fightingMon]['life'])
+            S_playerMon = Fighter(restingMon,fighters[restingMon]['name'],fighters[restingMon]['type'],fighters[restingMon]['speed'],fighters[restingMon]['attack'],fighters[restingMon]['life'])
+            effect_txt = P_playerMon.something(P_playerMon,P_enemyMon)
+
+        check1 = False
+        check2 = False
+        check3 = False
+
+        P_swaps = 3
+        E_swaps = 3
+
+        PPMon_ani = 0
+        PSMon_ani = 0
+        EPMon_ani = 0
+        ESMon_ani = 0
+        
+        
+        if P_playerMon.speed > P_enemyMon.speed:
+            turn = True
         while running:
 
-            font = pygame.font.SysFont('PressStart2P-Regular.ttf', 30)
+            font = pygame.font.Font('PressStart2P-Regular.ttf', 12)
             mx, my = pygame.mouse.get_pos()
 
             screen.fill(self.backgroundColor)
-            self.draw_text('Pick PiusMon', font, self.textColor, screen, 250, 40)
-            Back_button = self.draw_button(10, 10, 200, 50, screen, (200, 210, 100), '<', font, self.textColor)
+            #self.draw_text('Play', font, self.textColor, screen, 250, 40)
+            Back_button = self.draw_button(10, 10, 50, 50, screen, (200, 0, 0), '<--', font, self.textColor)
+
+            self.draw_text(f"Player Swaps:{P_swaps}", font, self.textColor, screen, 20, 150)
+            self.draw_text(f"Enemy Swaps:{E_swaps}", font, self.textColor, screen, 725, 150)
+
+            if turn == True:
+                turn_val = "1"
+                self.draw_text(f"Player {turn_val}", font, self.textColor, screen, 300, 100)
+            else:
+                turn_val = "2"
+                self.draw_text(f"Player {turn_val}", font, self.textColor, screen, 300, 100)
+            
+            # if check1 == False:
+            #     if P_playerMon.life > 0: # if the player is still alive
+            #         self.draw_card(screen, 100, 200, 400, 400, fightingMon,P_playerMon, False, PM, fighters, font, self.textColor)
+            #     else:
+            #         if P_playerMon.life  and S_playerMon.life < 0: #check if they are both dead
+            #             running = False
+            #         check1 = True
+            #         fightingMon,restingMon = restingMon,fightingMon
+
+            bar_txt = f"{fighters[fightingMon]['type']} vs {fighters[enemy1]['type']}"
+            action_bar = self.draw_button(300, 50, 177, 40, screen, self.backgroundColor, bar_txt, pygame.font.Font('PressStart2P-Regular.ttf', 20), self.textColor)
+
+            if P_playerMon.life<= 0 and S_playerMon.life <=0:
+                    winer = "ENEMY"
+                    score[1]+=1
+                    self.win_screen(winer,score)
+
+            if P_enemyMon.life<= 0 and S_enemyMon.life <= 0:
+                winer = "PLAYER"
+                score[0]+=1
+                self.win_screen(winer,score)
+
+            if P_playerMon.life > 0: # if the player is still alive
+                PPmon = self.draw_card(screen, 100, 200, 400, 400, fightingMon,P_playerMon, False, PM, fighters,PPMon_ani, font, (self.textColor))
+            else:
+                if check1 == False:
+                    print('player died')
+                    fightingMon,restingMon = restingMon,fightingMon
+                    P_playerMon,S_playerMon = S_playerMon,P_playerMon
+                    check2 = True
+                    check1 =True
+
+         
+            
+            if check2 ==False:
+                if S_playerMon.life > 0:
+                    PSMon = self.draw_card(screen, 25, 250, 200, 200, restingMon,S_playerMon, False, PM, fighters,PSMon_ani, font, self.textColor,True)
+
+         
+
+            
+            if P_enemyMon.life > 0:
+                EPMon = self.draw_card(screen, 400, 200, 400, 400, enemy1,P_enemyMon, True, PM, fighters,EPMon_ani, font, self.textColor)
+            else:            
+                if check3 == False:
+                    print("enemy died")
+                    enemy1,enemy2 = enemy2,enemy2
+                    P_enemyMon,S_enemyMon = S_enemyMon,P_enemyMon
+                    check3 = True
+            
+            if check3 == False:
+                if S_enemyMon.life > 0:
+                    ESMon = self.draw_card(screen, 700, 250, 200, 200, enemy2,S_enemyMon, True, PM, fighters,ESMon_ani, font, self.textColor,True)
+
+            
+ 
+            if P_playerMon.life > 0 and S_playerMon.life > 0:
+                if P_swaps > 0:
+                    swap_Button = self.draw_button(400, 550, 100, 50, screen, (0,200,0), 'swap', font, self.textColor)
+            
+
+            attack_Button = self.draw_button(400, 475, 100, 50, screen, (0,200,0), 'attack', font, self.textColor)
 
 
-            Splayer_button = self.draw_button(400, 400, 200, 50, screen, (200, 210, 100), 'Single', font, self.textColor)
-            Mplayer_button = self.draw_button(400, 500, 200, 50, screen, (200, 210, 100), 'Multi', font, self.textColor)
+                    
+            if P_playerMon.life<= 0 and S_playerMon.life <=0:
+                winer = "ENEMY"
+                score[1]+=1
+                self.win_screen(winer,score)
 
-            # Button 1 collision
-            if Splayer_button.collidepoint((mx, my)):
-                if click:
-                    self.Splayer_screen(screen)
-            if Mplayer_button.collidepoint((mx, my)):
-                if click:
-                    self.registor_screen(screen)
+            if P_enemyMon.life<= 0 and S_enemyMon.life <= 0:
+                winer = "PLAYER"
+                score[0]+=1
+                self.win_screen(winer,score)
 
+                
+                
+                turn = True
             # Events
             click = False
             for event in pygame.event.get():
@@ -955,6 +1072,194 @@ class PiusMon:
                 if event.type == MOUSEBUTTONDOWN:
                     if event.button == 1:
                         click = True
+                if Back_button.collidepoint((mx,my)):
+                    if click:
+                        running = False
+                if swap_Button.collidepoint((mx,my)):
+                    if click:
+                        #Player 1 Swaps
+                        if turn:
+                
+                            effect_txt = "PLAYER 1 SWAPS"
+                            fightingMon,restingMon = restingMon,fightingMon
+                            P_playerMon,S_playerMon = S_playerMon,P_playerMon
+                            print(effect_txt)
+                            turn = False
+                            P_swaps -= 1
+                            # if fightingMon == P_playerMon.key:
+                            #     if P_playerMon.speed < P_enemyMon.speed:
+                            #         P_enemyMon.Attack(P_playerMon,P_enemyMon)
+                            # if fightingMon == S_playerMon.key:
+                            #     if S_playerMon.speed < P_enemyMon.speed:
+                            #         S_enemyMon.Attack(S_playerMon,P_enemyMon)
+
+                                    
+                            self.draw_button(350, 150, 200, 50, screen, (200,0,0), effect_txt, font, self.textColor)
+                            PPmon = self.draw_card(screen, 100, 200, 400, 400, fightingMon,P_playerMon, False, PM, fighters,PPMon_ani, font, (self.textColor))
+                            PSMon = self.draw_card(screen, 25, 250, 200, 200, restingMon,S_playerMon, False, PM, fighters,PSMon_ani, font, self.textColor,True)
+
+                            pygame.display.update()
+                            time.sleep(2)
+                        #Player 2 swaps
+                        else:
+                            effect_txt = "ENEMY SWAPS"
+                            self.draw_button(350, 150, 200, 50, screen, (200,0,0), effect_txt, font, self.textColor)
+                            enemy1,enemy2 = enemy2,enemy1
+                            P_enemyMon,S_enemyMon = S_enemyMon,P_enemyMon
+                            print('enemy swap')
+                            E_swaps -=1
+                            ESMon = self.draw_card(screen, 700, 250, 200, 200, enemy2,S_enemyMon, True, PM, fighters,ESMon_ani, font, self.textColor,True)
+                            EPMon = self.draw_card(screen, 400, 200, 400, 400, enemy1,P_enemyMon, True, PM, fighters,EPMon_ani, font, self.textColor)
+                            # if enemy1 == P_enemyMon.key:
+                            #     if P_playerMon.speed > P_enemyMon.speed:
+                            #         P_playerMon.Attack(P_enemyMon,P_playerMon)
+                            # if enemy2 == S_playerMon.key:
+                            #     if S_playerMon.speed > P_enemyMon.speed:
+                            #         P_playerMon.Attack(S_enemyMon,P_playerMon)
+                            turn = True
+
+                            
+
+                    pygame.display.update()
+                    time.sleep(2)
+                        #fightingMon.swap()
+                if attack_Button.collidepoint((mx,my)):
+                    if click:
+                        #Player 1s attack
+                        if turn:
+                            
+                            if fightingMon == P_playerMon.key:
+                                if enemy1 == P_enemyMon.key:
+                                    P_playerMon.Attack(P_playerMon,P_enemyMon)
+                                    PPMon_ani = 1
+                                    EPMon_ani = 2
+                                    PPmon = self.draw_card(screen, 100, 200, 400, 400, fightingMon,P_playerMon, False, PM, fighters,PPMon_ani, font, (self.textColor))
+                                    EPMon = self.draw_card(screen, 400, 200, 400, 400, enemy1,P_enemyMon, True, PM, fighters,EPMon_ani, font, self.textColor)
+
+                                    effect_txt = "PLAYER 1 ATTACKS"
+                                    turn = False
+
+                                else:
+                                    P_playerMon.Attack(P_playerMon,S_enemyMon)
+                                    PPMon_ani = 1
+                                    ESMon_ani = 2
+                                    PPmon = self.draw_card(screen, 100, 200, 400, 400, fightingMon,P_playerMon, False, PM, fighters,PPMon_ani, font, (self.textColor))
+                                    ESMon = self.draw_card(screen, 700, 250, 200, 200, enemy2,S_enemyMon, True, PM, fighters,ESMon_ani, font, self.textColor,True)
+
+                                    effect_txt = "PLAYER 1ATTACKS"
+                                    turn = False
+                            else:
+                                if enemy1 == P_enemyMon.key:
+                                    S_playerMon.Attack(S_playerMon,P_enemyMon)
+                                    PSMon_ani = 1
+                                    EPMon_ani = 2
+
+                                    EPMon = self.draw_card(screen, 400, 200, 400, 400, enemy1,P_enemyMon, True, PM, fighters,EPMon_ani, font, self.textColor)
+                                    PSMon = self.draw_card(screen, 25, 250, 200, 200, restingMon,S_playerMon, False, PM, fighters,PSMon_ani, font, self.textColor,True)
+
+                                    effect_txt = "PLAYER 1 ATTACKS"
+                                    turn = False
+                                else:
+                                    S_playerMon.Attack(S_playerMon,S_enemyMon)
+                                    PSMon_ani = 1
+                                    ESMon_ani = 2
+
+                                    ESMon = self.draw_card(screen, 700, 250, 200, 200, enemy2,S_enemyMon, True, PM, fighters,ESMon_ani, font, self.textColor,True)
+                                    PSMon = self.draw_card(screen, 25, 250, 200, 200, restingMon,S_playerMon, False, PM, fighters,PSMon_ani, font, self.textColor,True)
+
+                                    effect_txt = "PLAYER 1  ATTACKS"
+                                    turn = False
+                            effect_txt = "PLAYER 1 ATTACKS"
+                            self.draw_button(350, 150, 200, 50, screen, (200,0,0), effect_txt, font, self.textColor)
+                            pygame.display.update()
+                            time.sleep(2)
+                            PPMon_ani = 0
+                            PSMon_ani = 0
+                            EPMon_ani = 0
+                            ESMon_ani = 0
+                            
+                            if check3 == False:
+                                if S_enemyMon.life > 0:
+                                    ESMon = self.draw_card(screen, 700, 250, 200, 200, enemy2,S_enemyMon, True, PM, fighters,ESMon_ani, font, self.textColor,True)
+                            if check2 ==False:
+                                if S_playerMon.life > 0:
+                                    PSMon = self.draw_card(screen, 25, 250, 200, 200, restingMon,S_playerMon, False, PM, fighters,PSMon_ani, font, self.textColor,True)
+
+                            #PSMon = self.draw_card(screen, 25, 250, 200, 200, restingMon,S_playerMon, False, PM, fighters,PSMon_ani, font, self.textColor,True)
+                            PPmon = self.draw_card(screen, 100, 200, 400, 400, fightingMon,P_playerMon, False, PM, fighters,PPMon_ani, font, (self.textColor))
+                            
+                            EPMon = self.draw_card(screen, 400, 200, 400, 400, enemy1,P_enemyMon, True, PM, fighters,EPMon_ani, font, self.textColor)
+                            pygame.display.update()
+                        #Player 2's attack
+                        else:
+                            if enemy1 == P_enemyMon.key:
+                                if fightingMon == P_playerMon.key:
+                                    effect_txt = "ENEMY ATTACKS"
+                                    P_enemyMon.Attack(P_enemyMon,P_playerMon)
+                                    PPMon_ani = 2
+                                    EPMon_ani = 1
+                                    PPmon = self.draw_card(screen, 100, 200, 400, 400, fightingMon,P_playerMon, False, PM, fighters,PPMon_ani, font, (self.textColor))
+                                    EPMon = self.draw_card(screen, 400, 200, 400, 400, enemy1,P_enemyMon, True, PM, fighters,EPMon_ani, font, self.textColor)
+
+                                    print('enemt attacks')
+                                    turn = True
+                                else:
+                                    effect_txt = "ENEMY ATTACKS"
+                                    P_enemyMon.Attack(P_enemyMon,S_playerMon)
+                                    PSMon_ani = 2
+                                    EPMon_ani = 1
+                                    EPMon = self.draw_card(screen, 400, 200, 400, 400, enemy1,P_enemyMon, True, PM, fighters,EPMon_ani, font, self.textColor)
+                                    PSMon = self.draw_card(screen, 25, 250, 200, 200, restingMon,S_playerMon, False, PM, fighters,PSMon_ani, font, self.textColor,True)
+
+                                    turn = True
+                            else:
+                                if enemy1 == P_enemyMon.key:
+                                    effect_txt = "ENEMY ATTACKS"
+                                    S_enemyMon.Attack(S_enemyMon,P_playerMon)
+                                    PPMon_ani = 2
+                                    ESMon_ani = 1
+                                    PPmon = self.draw_card(screen, 100, 200, 400, 400, fightingMon,P_playerMon, False, PM, fighters,PPMon_ani, font, (self.textColor))
+                                    ESMon = self.draw_card(screen, 700, 250, 200, 200, enemy2,S_enemyMon, True, PM, fighters,ESMon_ani, font, self.textColor,True)
+
+                                    turn = True
+                                else:
+                                    effect_txt = "ENEMY ATTACKS"
+                                    S_enemyMon.Attack(S_enemyMon,S_playerMon)
+                                    PSMon_ani = 2
+                                    ESMon_ani = 1
+
+                                    ESMon = self.draw_card(screen, 700, 250, 200, 200, enemy2,S_enemyMon, True, PM, fighters,ESMon_ani, font, self.textColor,True)
+                                    PSMon = self.draw_card(screen, 25, 250, 200, 200, restingMon,S_playerMon, False, PM, fighters,PSMon_ani, font, self.textColor,True)
+
+                                    turn = True
+                            effect_txt = "ENEMY ATTACKS"
+                            self.draw_button(350, 150, 200, 50, screen, (200,0,0), effect_txt, font, self.textColor)
+                            pygame.display.update()
+                            time.sleep(2)
+                            PPMon_ani = 0
+                            PSMon_ani = 0
+                            EPMon_ani = 0
+                            ESMon_ani = 0
+                            
+                            ESMon = self.draw_card(screen, 700, 250, 200, 200, enemy2,S_enemyMon, True, PM, fighters,ESMon_ani, font, self.textColor,True)
+                            EPMon = self.draw_card(screen, 400, 200, 400, 400, enemy1,P_enemyMon, True, PM, fighters,EPMon_ani, font, self.textColor)
+                            PSMon = self.draw_card(screen, 25, 250, 200, 200, restingMon,S_playerMon, False, PM, fighters,PSMon_ani, font, self.textColor,True)
+                            PPmon = self.draw_card(screen, 100, 200, 400, 400, fightingMon,P_playerMon, False, PM, fighters,PPMon_ani, font, (self.textColor))
+                            
+                            time.sleep(2)
+                            pygame.display.update()
+
+
+
+            
+    
+
+            
+            #effect_bar = self.draw_button(300, 120, 200, 25, screen, (0,23,200), effect_txt, font, self.textColor)
+
+            
+            
+            
 
             pygame.display.update()
             mainClock.tick(60)
