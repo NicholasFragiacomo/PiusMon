@@ -230,7 +230,7 @@ class PiusMon:
 
             screen.fill(self.backgroundColor)
             self.draw_text('Pick PiusMon', font, self.textColor, screen, 250, 40)   
-            Back_button = self.draw_button(10, 10, 50, 50, screen, (200, 0, 0), '<--', font, self.textColor)
+            Back_button = self.draw_button(10, 10, 50, 50, screen, (200, 0, 0), '<', pygame.font.Font('PressStart2P-Regular.ttf', 30), self.textColor)
 
             paperBoy_button = self.draw_fighterButton(200, 150, 120, 175, screen, PB,selection,'PB', (paperBoy.key).upper(), font, self.textColor,0,True,'Art/paperBoy.png',125,200,False)
             paperToy_button = self.draw_fighterButton(200, 350, 120, 175, screen, PT,selection,'PT', (paperToy.key).upper(), font, self.textColor,0,True,'Art/paperToy.png',125,200,False)
@@ -385,7 +385,7 @@ class PiusMon:
 
             screen.fill(self.backgroundColor)
             self.draw_text('Pick PiusMon', font, self.textColor, screen, 250, 40)
-            Back_button = self.draw_button(10, 10, 50, 50, screen, (200, 0, 0), '<--', font, self.textColor)
+            Back_button = self.draw_button(10, 10, 50, 50, screen, (200, 0, 0), '<', pygame.font.Font('PressStart2P-Regular.ttf', 30), self.textColor)
 
             P1_paperBoy_button = self.draw_fighterButton(100, 150, 80, 140, screen, P1_PB,P1_selection,'PB', (P1_paperBoy.key).upper(), font, self.textColor,0,True,'Art/paperBoy.png',85,125,False)
             P1_paperToy_button = self.draw_fighterButton(100, 300, 80, 140, screen, P1_PT,P1_selection,'PT', (P1_paperToy.key).upper(), font, self.textColor,0,True,'Art/paperToy.png',85,125,False)
@@ -623,7 +623,7 @@ class PiusMon:
 
             screen.fill(self.backgroundColor)
             #self.draw_text('Play', font, self.textColor, screen, 250, 40)
-            Back_button = self.draw_button(10, 10, 50, 50, screen, (200, 0, 0), '<--', font, self.textColor)
+            Back_button = self.draw_button(10, 10, 50, 50, screen, (200, 0, 0), '<', pygame.font.Font('PressStart2P-Regular.ttf', 30), self.textColor)
 
             self.draw_text(f"Player Swaps:{P_swaps}", font, self.textColor, screen, 20, 150)
             self.draw_text(f"Enemy Swaps:{E_swaps}", font, self.textColor, screen, 725, 150)
@@ -642,12 +642,12 @@ class PiusMon:
             if P_playerMon.life<= 0 and S_playerMon.life <=0:
                     winer = "ENEMY"
                     score[1]+=1
-                    self.win_screen(winer,score)
+                    self.S_win_screen(winer,score)
 
             if P_enemyMon.life<= 0 and S_enemyMon.life <= 0:
                 winer = "PLAYER"
                 score[0]+=1
-                self.win_screen(winer,score)
+                self.S_win_screen(winer,score)
 
             if P_playerMon.life > 0: # if the player is still alive
                 PPmon = self.draw_card(screen, 100, 200, 400, 400, fightingMon,P_playerMon, False, PM, fighters,PPMon_ani, font, (self.textColor))
@@ -788,12 +788,12 @@ class PiusMon:
                 if P_playerMon.life<= 0 and S_playerMon.life <=0:
                     winer = "ENEMY"
                     score[1]+=1
-                    self.win_screen(winer,score)
+                    self.S_win_screen(winer,score)
 
                 if P_enemyMon.life<= 0 and S_enemyMon.life <= 0:
                     winer = "PLAYER"
                     score[0]+=1
-                    self.win_screen(winer,score)
+                    self.S_win_screen(winer,score)
 
                 
                 
@@ -973,17 +973,19 @@ class PiusMon:
 
             screen.fill(self.backgroundColor)
             #self.draw_text('Play', font, self.textColor, screen, 250, 40)
-            Back_button = self.draw_button(10, 10, 50, 50, screen, (200, 0, 0), '<--', font, self.textColor)
+            Back_button = self.draw_button(10, 10, 50, 50, screen, (200, 0, 0), '<', pygame.font.Font('PressStart2P-Regular.ttf', 30), self.textColor)
 
-            self.draw_text(f"Player Swaps:{P_swaps}", font, self.textColor, screen, 20, 150)
-            self.draw_text(f"Enemy Swaps:{E_swaps}", font, self.textColor, screen, 725, 150)
+            self.draw_text(f"Player 1 Swaps:{P_swaps}", font, self.textColor, screen, 20, 150)
+            self.draw_text(f"Player 2 Swaps:{E_swaps}", font, self.textColor, screen, 700, 150)
 
             if turn == True:
                 turn_val = "1"
-                self.draw_text(f"Player {turn_val}", font, self.textColor, screen, 300, 100)
+                self.draw_button(400, 100, 125, 30, screen, (0, 250, 0), f"Player {turn_val}", font, self.textColor)
+                #self.draw_text(f"Player {turn_val}", font, self.textColor, screen, 300, 100)
             else:
                 turn_val = "2"
-                self.draw_text(f"Player {turn_val}", font, self.textColor, screen, 300, 100)
+                #self.draw_text(f"Player {turn_val}", font, self.textColor, screen, 300, 100)
+                self.draw_button(400, 100, 125, 30, screen, (0, 250, 0), f"Player {turn_val}", font, self.textColor)
             
             # if check1 == False:
             #     if P_playerMon.life > 0: # if the player is still alive
@@ -998,14 +1000,14 @@ class PiusMon:
             action_bar = self.draw_button(300, 50, 177, 40, screen, self.backgroundColor, bar_txt, pygame.font.Font('PressStart2P-Regular.ttf', 20), self.textColor)
 
             if P_playerMon.life<= 0 and S_playerMon.life <=0:
-                    winer = "ENEMY"
+                    winer = "PLAYER 2"
                     score[1]+=1
-                    self.win_screen(winer,score)
+                    self.M_win_screen(winer,score)
 
             if P_enemyMon.life<= 0 and S_enemyMon.life <= 0:
                 winer = "PLAYER"
                 score[0]+=1
-                self.win_screen(winer,score)
+                self.M_win_screen(winer,score)
 
             if P_playerMon.life > 0: # if the player is still alive
                 PPmon = self.draw_card(screen, 100, 200, 400, 400, fightingMon,P_playerMon, False, PM, fighters,PPMon_ani, font, (self.textColor))
@@ -1040,25 +1042,29 @@ class PiusMon:
                     ESMon = self.draw_card(screen, 700, 250, 200, 200, enemy2,S_enemyMon, True, PM, fighters,ESMon_ani, font, self.textColor,True)
 
             
- 
-            if P_playerMon.life > 0 and S_playerMon.life > 0:
-                if P_swaps > 0:
-                    swap_Button = self.draw_button(400, 550, 100, 50, screen, (0,200,0), 'swap', font, self.textColor)
-            
+            if turn:
+                if P_playerMon.life > 0 and S_playerMon.life > 0:
+                    if P_swaps > 0:
+                        swap_Button = self.draw_button(400, 550, 100, 50, screen, (0,200,0), 'swap', font, self.textColor)
+            else:
+                if P_enemyMon.life > 0 and S_enemyMon.life > 0:
+                    if E_swaps > 0:
+                        swap_Button = self.draw_button(400, 550, 100, 50, screen, (0,200,0), 'swap', font, self.textColor)
+           
 
             attack_Button = self.draw_button(400, 475, 100, 50, screen, (0,200,0), 'attack', font, self.textColor)
 
 
                     
             if P_playerMon.life<= 0 and S_playerMon.life <=0:
-                winer = "ENEMY"
+                winer = "Player 2"
                 score[1]+=1
-                self.win_screen(winer,score)
+                self.M_win_screen(winer,score)
 
             if P_enemyMon.life<= 0 and S_enemyMon.life <= 0:
                 winer = "PLAYER"
                 score[0]+=1
-                self.win_screen(winer,score)
+                self.M_win_screen(winer,score)
 
                 
                 
@@ -1102,7 +1108,7 @@ class PiusMon:
                             time.sleep(2)
                         #Player 2 swaps
                         else:
-                            effect_txt = "ENEMY SWAPS"
+                            effect_txt = "Player 2 SWAPS"
                             self.draw_button(350, 150, 200, 50, screen, (200,0,0), effect_txt, font, self.textColor)
                             enemy1,enemy2 = enemy2,enemy1
                             P_enemyMon,S_enemyMon = S_enemyMon,P_enemyMon
@@ -1120,8 +1126,8 @@ class PiusMon:
 
                             
 
-                    pygame.display.update()
-                    time.sleep(2)
+                            pygame.display.update()
+                            time.sleep(2)
                         #fightingMon.swap()
                 if attack_Button.collidepoint((mx,my)):
                     if click:
@@ -1194,7 +1200,7 @@ class PiusMon:
                         else:
                             if enemy1 == P_enemyMon.key:
                                 if fightingMon == P_playerMon.key:
-                                    effect_txt = "ENEMY ATTACKS"
+                                    effect_txt = "Player 2 ATTACKS"
                                     P_enemyMon.Attack(P_enemyMon,P_playerMon)
                                     PPMon_ani = 2
                                     EPMon_ani = 1
@@ -1204,7 +1210,7 @@ class PiusMon:
                                     print('enemt attacks')
                                     turn = True
                                 else:
-                                    effect_txt = "ENEMY ATTACKS"
+                                    effect_txt = "Player 2 ATTACKS"
                                     P_enemyMon.Attack(P_enemyMon,S_playerMon)
                                     PSMon_ani = 2
                                     EPMon_ani = 1
@@ -1214,7 +1220,7 @@ class PiusMon:
                                     turn = True
                             else:
                                 if enemy1 == P_enemyMon.key:
-                                    effect_txt = "ENEMY ATTACKS"
+                                    effect_txt = "Player 2 ATTACKS"
                                     S_enemyMon.Attack(S_enemyMon,P_playerMon)
                                     PPMon_ani = 2
                                     ESMon_ani = 1
@@ -1223,7 +1229,7 @@ class PiusMon:
 
                                     turn = True
                                 else:
-                                    effect_txt = "ENEMY ATTACKS"
+                                    effect_txt = "Player 2 ATTACKS"
                                     S_enemyMon.Attack(S_enemyMon,S_playerMon)
                                     PSMon_ani = 2
                                     ESMon_ani = 1
@@ -1232,7 +1238,7 @@ class PiusMon:
                                     PSMon = self.draw_card(screen, 25, 250, 200, 200, restingMon,S_playerMon, False, PM, fighters,PSMon_ani, font, self.textColor,True)
 
                                     turn = True
-                            effect_txt = "ENEMY ATTACKS"
+                            effect_txt = "Player 2 ATTACKS"
                             self.draw_button(350, 150, 200, 50, screen, (200,0,0), effect_txt, font, self.textColor)
                             pygame.display.update()
                             time.sleep(2)
@@ -1265,7 +1271,7 @@ class PiusMon:
             mainClock.tick(60)
 
 
-    def win_screen(self,winer,score):
+    def S_win_screen(self,winer,score):
 
         screen = self.draw_screen('PiusMon',self.width,self.height)
         click = False
@@ -1299,7 +1305,7 @@ class PiusMon:
             self.draw_image(screen,logo,False,300,20,300,300)
 
             self.draw_text(f'{winer} won!', font, (255,255,255), screen, 320, 200)
-            self.draw_text("Score", font, self.textColor, screen, 400, 315)
+            self.draw_text("Score", font, self.textColor, screen, 375, 315)
             self.draw_text(f"{score[0]}:{score[1]}", font, self.textColor, screen, 400, 350)
 
             playAgain_button = self.draw_button(250, 400, 200, 50, screen, (200, 210, 100), 'AGAIN', font, self.textColor)
@@ -1312,6 +1318,71 @@ class PiusMon:
             if playAgain_button.collidepoint((mx, my)):
                 if click:
                     self.singlePick_screen(screen,score)
+            if menu_button.collidepoint((mx, my)):
+                if click:
+                    self.start_screen()
+            
+
+            # Events
+            click = False
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        click = True
+
+            pygame.display.update()
+            mainClock.tick(60)
+
+    def M_win_screen(self,winer,score):
+
+        screen = self.draw_screen('PiusMon',self.width,self.height)
+        click = False
+        running = True
+
+
+        logo_sprite = ["Art\Sprite sheets\Logo\planet-1.png.png",
+        "Art\Sprite sheets\Logo\planet-2.png.png",
+        "Art\Sprite sheets\Logo\planet-3.png.png",
+        "Art\Sprite sheets\Logo\planet-4.png.png",
+        "Art\Sprite sheets\Logo\planet-5.png.png",
+        "Art\Sprite sheets\Logo\planet-6.png.png",]
+        sprite_value = 0
+
+
+
+        while running:
+            
+
+            font = pygame.font.Font('PressStart2P-Regular.ttf', 30)
+            mx, my = pygame.mouse.get_pos()
+
+            screen.fill(self.backgroundColor)
+
+
+
+            sprite_value +=0.1
+            logo = logo_sprite[int(sprite_value)]
+            if sprite_value >= len(logo_sprite)-1:
+                sprite_value = 0
+            self.draw_image(screen,logo,False,300,20,300,300)
+
+            self.draw_text(f'{winer} won!', font, (255,255,255), screen, 320, 200)
+            self.draw_text("Score", font, self.textColor, screen, 375, 315)
+            self.draw_text(f"{score[0]}:{score[1]}", font, self.textColor, screen, 400, 350)
+
+            playAgain_button = self.draw_button(250, 400, 200, 50, screen, (200, 210, 100), 'AGAIN', font, self.textColor)
+            #Mplayer_button = self.draw_button(350, 500, 200, 50, screen, (200, 210, 100), 'Multiplayer', font, self.textColor)
+
+            menu_button = self.draw_button(500, 400, 200, 50, screen, (200,210,100), "MENU", font, self.textColor)
+
+
+            # Button 1 collision
+            if playAgain_button.collidepoint((mx, my)):
+                if click:
+                    self.multiPick_screen(screen,score)
             if menu_button.collidepoint((mx, my)):
                 if click:
                     self.start_screen()
