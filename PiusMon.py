@@ -548,7 +548,7 @@ class PiusMon:
             
             P_playerMon = Fighter(fightingMon,fighters[fightingMon]['name'],fighters[fightingMon]['type'],fighters[fightingMon]['speed'],fighters[fightingMon]['attack'],fighters[fightingMon]['life'])
             S_playerMon = Fighter(restingMon,fighters[restingMon]['name'],fighters[restingMon]['type'],fighters[restingMon]['speed'],fighters[restingMon]['attack'],fighters[restingMon]['life'])
-            effect_txt = P_playerMon.something(P_playerMon,P_enemyMon)
+            effect_txt = P_playerMon.effect(P_playerMon,P_enemyMon)
 
         #These varables ensure that once a player dies that a logic error does not occour
         check1 = False
@@ -860,7 +860,7 @@ class PiusMon:
             
             P_playerMon = Fighter(fightingMon,fighters[fightingMon]['name'],fighters[fightingMon]['type'],fighters[fightingMon]['speed'],fighters[fightingMon]['attack'],fighters[fightingMon]['life'])
             S_playerMon = Fighter(restingMon,fighters[restingMon]['name'],fighters[restingMon]['type'],fighters[restingMon]['speed'],fighters[restingMon]['attack'],fighters[restingMon]['life'])
-            effect_txt = P_playerMon.something(P_playerMon,P_enemyMon)
+            effect_txt = P_playerMon.effect(P_playerMon,P_enemyMon)
 
         check1 = False
         check2 = False
