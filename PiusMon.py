@@ -1,4 +1,4 @@
-'''from tkinter import font'''
+'''Imports'''
 import pygame
 import sys
 import random
@@ -9,26 +9,6 @@ from fighters import Fighter
 import fighters
 import time
 
-
-'''TODO:
-
-GamePlay:
-- [X]when in battle a trainer may choose 2 thingsattack (may expand) or swap.
-- [X]the monster with the fastest speed will hit first.
-- []if you choose to swap and your monster is the fastest he may swap and not get hit
-- []if you choose to swap and he is the slowest he will take the damage from the attack first.
-- [X]trainers may only swap 3 times per battle
-- [X]If a PiusMon is Knocked out he is instantly switched with the next PiusMon
-- [X]If there are no other Piusmon left the other player is the winner
-- []Sound
-
-Animation:
-- [X]normal state
-- [X]attacking state
-- [X]getting hit
-
-
-    '''
 
 class PiusMon:
 
@@ -44,6 +24,7 @@ class PiusMon:
     Functions
     '''
 
+    #creates and draws the screen which all other elements are added too
     def draw_screen(self, caption,width,height):
         screen = pygame.display.set_mode((width, height))
         pygame.display.set_caption(caption)
@@ -58,9 +39,10 @@ class PiusMon:
         button = pygame.Rect(x, y, width, height)
         pygame.draw.rect(screen, (button_color), button, outline)
         self.draw_text(text, font, text_color, screen, x+10, y+10)
-        #pygame.display.update()
+
         return button
 
+    
     def draw_fighterButton(self, x, y, width, height, screen, selected,list,key, text, font, text_color, outline=0, img = False,img_file='',img_w=10,img_h=10,flip = False):
         button = pygame.Rect(x, y, width, height)
         if selected:
@@ -76,13 +58,14 @@ class PiusMon:
             self.draw_image(screen,img_file,flip,x,y,img_w,img_h)
         return button
     
-
+    #displays Text to the screen
     def draw_text(self, text, font, color, surface, x, y):
         textobj = font.render(text, 1, color)
         textrect = textobj.get_rect()
         textrect.topleft = (x, y)
         surface.blit(textobj, textrect)
 
+    #displays an image to the screen
     def draw_image(self, screen, img_file,flip,x,y,w,h):
         img = pygame.image.load(img_file).convert_alpha()
         img = pygame.transform.scale(img, (w, h)) 
@@ -90,16 +73,7 @@ class PiusMon:
             img = pygame.transform.flip(img, True, False)
         screen.blit(img,(x,y))
         
-    def draw_card2(self,screen,x,y,w,h,PiusMon,flip,fighters_list,fighters_file,font,color,resting=False):
-
-        self.draw_image(screen, fighters_file[PiusMon]['img_file'], flip, x, y, w, h)
-        if resting == True:
-            x= x-150
-        self.draw_text(f"{fighters_file[PiusMon]['name']}",font,color,screen,x+150,y)
-        self.draw_text(f"Life : {fighters_file[PiusMon]['life']}",font,color,screen,x+150,y+325)
-        self.draw_text(f"speed : {fighters_file[PiusMon]['speed']}",font,color,screen,x+150,y+350)
-        self.draw_text(f"attack : {fighters_file[PiusMon]['attack']}",font,color,screen,x+150,y+375)
-
+   # displays a PiusMon with their stats and name to the screen
     def draw_card(self,screen,x,y,w,h,PiusMon,PM,flip,fighters_list,fighters_file,frame,font,color,resting=False):
 
         self.draw_image(screen, fighters_file[PiusMon]['img_file'][frame], flip, x, y, w, h)
@@ -111,23 +85,6 @@ class PiusMon:
         self.draw_text(f"speed : {fighters_file[PiusMon]['speed']}",font,color,screen,x+150,y+350)
         self.draw_text(f"attack : {fighters_file[PiusMon]['attack']}",font,color,screen,x+150,y+375)
 
-    def select(self,selection,fighter_key,XX):
-        if XX == True:
-            if len(selection) <= 2:
-                XX = False
-                selection = selection.remove(fighter_key)
-                print(selection)
-                return (selection,XX)
-            else:
-                if len(selection) <= 2:
-                    XX = True
-                    selection = selection.append(fighter_key)
-                    print(selection)
-                    return (selection,XX)
-
-    
-
-    
  
     '''
     Screens
@@ -157,23 +114,19 @@ class PiusMon:
             mx, my = pygame.mouse.get_pos()
 
             screen.fill(self.backgroundColor)
-
-
-
             sprite_value +=0.1
             logo = logo_sprite[int(sprite_value)]
             
             if sprite_value >= len(logo_sprite)-1:
                 sprite_value = 0
 
-
             Splayer_button = self.draw_button(350, 400, 200, 50, screen, (200, 210, 100), 'Single', font, self.textColor)
             Mplayer_button = self.draw_button(350, 500, 200, 50, screen, (200, 210, 100), 'Multi', font, self.textColor)
 
             self.draw_image(screen,logo,False,300,20,300,300)
-
             self.draw_text('PiusMon', font, (255,255,255), screen, 400, 200)
-            # Button 1 collision
+            
+            # Button  collision
             if Splayer_button.collidepoint((mx, my)):
                 if click:
                     self.singlePick_screen(screen,score)
@@ -202,6 +155,7 @@ class PiusMon:
         click = False
         running = True
 
+        # The variables to identify wheather a PiusMon is selected
         PB,PT,R,RS,SJ,SR = False,False,False,False,False,False
         selection = []
 
@@ -223,10 +177,6 @@ class PiusMon:
             font = pygame.font.Font('PressStart2P-Regular.ttf', 30)
             mx, my = pygame.mouse.get_pos()
 
-            
-            
-
-            
 
             screen.fill(self.backgroundColor)
             self.draw_text('Pick PiusMon', font, self.textColor, screen, 250, 40)   
@@ -245,6 +195,8 @@ class PiusMon:
             ready_button = self.draw_button(350, 550, 200, 50, screen, (0,200,0), 'READY', font, self.textColor)
 
 
+
+            #Button collision
             if paperBoy_button.collidepoint((mx, my)):
                 if click:
                     if PB == True: 
@@ -311,17 +263,13 @@ class PiusMon:
                             SR = True
                             selection.append('SR')
                             print(selection)
-
             if Back_button.collidepoint((mx,my)):
-                if click:
-                    
+                if click:    
                     running = False
-
             if ready_button.collidepoint((mx,my)):
                 if click:
                     if len(selection) == 2:
                         self.Splayer_screen(screen,selection,score)
-
 
             # Events
             click = False
@@ -332,8 +280,6 @@ class PiusMon:
                 if event.type == MOUSEBUTTONDOWN:
                     if event.button == 1:
                         click = True
-
-    
 
             pygame.display.update()
             mainClock.tick(60)
@@ -412,134 +358,134 @@ class PiusMon:
                     if P1_PB == True: 
                         P1_PB = False
                         P1_selection.remove('PB')
-                        print(P1_selection)
+                        
                     else: 
                         if len(P1_selection) < 2:  
                             P1_PB = True
                             P1_selection.append('PB')
-                            print(P1_selection)
+                            
             if P1_paperToy_button.collidepoint((mx, my)):
                 if click:
                     if P1_PT == True:
                         P1_PT = False
                         P1_selection.remove('PT')
-                        print(P1_selection)
+                        
                     else:
                         if len(P1_selection) < 2:
                             P1_PT = True
                             P1_selection.append('PT')
-                            print(P1_selection)
+                            
             if P1_rockson_button.collidepoint((mx, my)):
                 if click:
                     if P1_R == True:
                         P1_R = False
                         P1_selection.remove('R')
-                        print(P1_selection)
+                        
                     else:
                         if len(P1_selection) < 2:
                             P1_R = True
                             P1_selection.append('R')
-                            print(P1_selection)
+                            
             if P1_rockoSocko_button.collidepoint((mx, my)):
                 if click:
                     if P1_RS == True:
                         P1_RS = False
                         P1_selection.remove('RS')
-                        print(P1_selection)
+                        
                     else:
                         if len(P1_selection) < 2:
                             P1_RS = True
                             P1_selection.append('RS')
-                            print(P1_selection)
+                            
             if P1_scissorFeetjohn_button.collidepoint((mx, my)):
                 if click:
                     if P1_SJ == True:
                         P1_SJ = False
                         P1_selection.remove('SJ')
-                        print(P1_selection)
+                        
                     else:
                         if len(P1_selection) < 2:
                             P1_SJ = True
                             P1_selection.append('SJ')
-                            print(P1_selection)
+                            
             if P1_scissorFeetron_button.collidepoint((mx, my)):
                 if click:
                     if P1_SR == True:
                         P1_SR = False
                         P1_selection.remove('SR')
-                        print(P1_selection)
+                        
                     else:
                         if len(P1_selection) < 2:
                             P1_SR = True
                             P1_selection.append('SR')
-                            print(P1_selection)
+                            
 
             if P2_paperBoy_button.collidepoint((mx, my)):
                 if click:
                     if P2_PB == True: 
                         P2_PB = False
                         P2_selection.remove('PB')
-                        print(P2_selection)
+                
                     else: 
                         if len(P2_selection) < 2:  
                             P2_PB = True
                             P2_selection.append('PB')
-                            print(P2_selection)
+                    
             if P2_paperToy_button.collidepoint((mx, my)):
                 if click:
                     if P2_PT == True:
                         P2_PT = False
                         P2_selection.remove('PT')
-                        print(P2_selection)
+                
                     else:
                         if len(P2_selection) < 2:
                             P2_PT = True
                             P2_selection.append('PT')
-                            print(P2_selection)
+                    
             if P2_rockson_button.collidepoint((mx, my)):
                 if click:
                     if P2_R == True:
                         P2_R = False
                         P2_selection.remove('R')
-                        print(P2_selection)
+                
                     else:
                         if len(P2_selection) < 2:
                             P2_R = True
                             P2_selection.append('R')
-                            print(P2_selection)
+                    
             if P2_rockoSocko_button.collidepoint((mx, my)):
                 if click:
                     if P2_RS == True:
                         P2_RS = False
                         P2_selection.remove('RS')
-                        print(P2_selection)
+                
                     else:
                         if len(P2_selection) < 2:
                             P2_RS = True
                             P2_selection.append('RS')
-                            print(P2_selection)
+                    
             if P2_scissorFeetjohn_button.collidepoint((mx, my)):
                 if click:
                     if P2_SJ == True:
                         P2_SJ = False
                         P2_selection.remove('SJ')
-                        print(P2_selection)
+                
                     else:
                         if len(P2_selection) < 2:
                             P2_SJ = True
                             P2_selection.append('SJ')
-                            print(P2_selection)
+                    
             if P2_scissorFeetron_button.collidepoint((mx, my)):
                 if click:
                     if P2_SR == True:
                         P2_SR = False
                         P2_selection.remove('SR')
-                        print(P2_selection)
+                
                     else:
                         if len(P2_selection) < 2:
                             P2_SR = True
                             P2_selection.append('SR')
-                            print(P2_selection)
+                    
 
             if Back_button.collidepoint((mx,my)):
                 if click:
@@ -591,7 +537,7 @@ class PiusMon:
             restingMon = selection[1]
 
             enemy1 = random.choice(PM)
-            PM.remove(enemy1)
+            PM.remove(enemy1) #removing the PiusMon from the list to ensure that the enemy cannot have 2 of the same chracter
             enemy2 = random.choice(PM)
 
             P_enemyMon = Fighter(enemy1,fighters[enemy1]['name'],fighters[enemy1]['type'],fighters[enemy1]['speed'],fighters[enemy1]['attack'],fighters[enemy1]['life'])
@@ -605,9 +551,11 @@ class PiusMon:
         check2 = False
         check3 = False
 
+        # These varaibales indicate how many swaps the players havex
         P_swaps = 3
         E_swaps = 3
 
+        # These Variables indicate which animation the PiusMon is on
         PPMon_ani = 0
         PSMon_ani = 0
         EPMon_ani = 0
@@ -622,29 +570,22 @@ class PiusMon:
             mx, my = pygame.mouse.get_pos()
 
             screen.fill(self.backgroundColor)
-            #self.draw_text('Play', font, self.textColor, screen, 250, 40)
+            
             Back_button = self.draw_button(10, 10, 50, 50, screen, (200, 0, 0), '<', pygame.font.Font('PressStart2P-Regular.ttf', 30), self.textColor)
 
             self.draw_text(f"Player Swaps:{P_swaps}", font, self.textColor, screen, 20, 150)
             self.draw_text(f"Enemy Swaps:{E_swaps}", font, self.textColor, screen, 725, 150)
-            # if check1 == False:
-            #     if P_playerMon.life > 0: # if the player is still alive
-            #         self.draw_card(screen, 100, 200, 400, 400, fightingMon,P_playerMon, False, PM, fighters, font, self.textColor)
-            #     else:
-            #         if P_playerMon.life  and S_playerMon.life < 0: #check if they are both dead
-            #             running = False
-            #         check1 = True
-            #         fightingMon,restingMon = restingMon,fightingMon
+
 
             bar_txt = f"{fighters[fightingMon]['type']} vs {fighters[enemy1]['type']}"
             action_bar = self.draw_button(300, 50, 177, 40, screen, self.backgroundColor, bar_txt, pygame.font.Font('PressStart2P-Regular.ttf', 20), self.textColor)
 
-            if P_playerMon.life<= 0 and S_playerMon.life <=0:
+            if P_playerMon.life<= 0 and S_playerMon.life <=0: # If both players PiusMon are dead
                     winer = "ENEMY"
                     score[1]+=1
                     self.S_win_screen(winer,score)
 
-            if P_enemyMon.life<= 0 and S_enemyMon.life <= 0:
+            if P_enemyMon.life<= 0 and S_enemyMon.life <= 0: # If both enemys PiusMon are dead
                 winer = "PLAYER"
                 score[0]+=1
                 self.S_win_screen(winer,score)
