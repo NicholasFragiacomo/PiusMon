@@ -11,8 +11,7 @@ class Fighter:
             
 
     def Attack(self,fighter,defender):
-        print(f'attack: ')
-        print(fighter.attack)
+        
         multiplier  = 1
         if fighter.type == 'paper':
             if defender.type == 'rock':
@@ -31,40 +30,9 @@ class Fighter:
                 multiplier = 0.5     
 
         defender.life = defender.life - (fighter.attack*multiplier)
-        print(defender.life)
+        
 
-    def something(self,fighter,defender):
-        if fighter.type == 'paper':
-            if defender.type == 'rock':
-                return "DOUBLE DAMAGE"
-            if defender.type == 'scissors':
-                return "HALF DAMAGE"
-        if fighter.type == 'rock':
-            if defender.type == 'scissors':
-                return "DOUBLE DAMAGE"
-            if defender.type == 'paper':
-                return "HALF DAMAGE"  
-        if fighter.type == 'scissors':
-            if defender.type == 'paper':
-                return "DOUBLE DAMAGE"
-            if defender.type == 'rock':
-                return "HALF DAMAGE"  
-    
 
-    def swap(self):
-        print('Swap')
-
-'''
-Main
-'''
-
-#def main():
-
-    #F = Fighters()
-
-    
     
 
 
-# if __name__ == "__main__":
-#     main()
